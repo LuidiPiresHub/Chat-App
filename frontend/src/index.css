@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+body {
+  background-color: rgb(20, 20, 40);
+  color: white;
+  background-image: url('./assets/background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+input:-webkit-autofill {
+  background-color: inherit !important;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 9999s ease-in-out 0s;
+  box-shadow: 0 0 0px 1000px inherit inset !important;
+}
