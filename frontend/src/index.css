@@ -1,12 +1,22 @@
 @import "tailwindcss";
 
+@theme {
+  --animate-load: load 15s infinite linear;
+
+  @keyframes load {
+    0% {
+      stroke-dashoffset: 0px;
+    }
+
+    100% {
+      stroke-dashoffset: 200px;
+    }
+  }
+}
+
 body {
   background-color: rgb(20, 20, 40);
   color: white;
-  background-image: url('./assets/background.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
 }
 
 input:-webkit-autofill {
