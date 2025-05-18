@@ -1,40 +1,38 @@
 import { Mail, Lock, EyeIcon, EyeOff, Loader } from 'lucide-react';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ILoginForm, loginSchema } from '../schemas/login';
+import { ISignInForm,  signInSchema} from '../schemas/signIn';
 import { useMutation } from '@tanstack/react-query';
 // import { api } from '../config/axios';
 import useAuth from '../hooks/useAuth';
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(loginSchema) });
+  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(signInSchema) });
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: async (data: ILoginForm) => {
+    mutationFn: async (data: ISignInForm) => {
       await new Promise((resolve) => setTimeout(resolve, 500));
       // return await api.post('/login', data);
       return { status: 200, message: 'Login Aprovado', data };
     }
   })
   const { setIsAuthenticated } = useAuth();
-  const navigate = useNavigate();
 
   const changePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
 
-  const userLogin = async (data: ILoginForm) => {
+  const userLogin = async (data: ISignInForm) => {
     const res = await mutateAsync(data);
     console.log(res);
     setIsAuthenticated(true);
-    navigate('/');
   };
 
   return (
-    <main className='min-h-dvh flex flex-col items-center justify-center'>
-      <section className='bg-gray-700 p-12 rounded-3xl flex flex-col gap-8'>
+    <main className='min-h-dvh bg-[url("assets/bgMobile.png")] bg-no-repeat bg-cover bg-fixed md:bg-[url("assets/bgDesktop.png")] flex flex-col items-center justify-center p-4'>
+      <section className='bg-gray-700 p-8 sm:p-12 rounded-3xl flex flex-col gap-8'>
         <h1 className='text-5xl font-bold mb-4'>Sign In</h1>
         <form onSubmit={handleSubmit(userLogin)} className='flex flex-col gap-4 select-none'>
           <label
@@ -79,7 +77,7 @@ export default function SignIn() {
           </button>
         </form>
         <hr className='border-gray-500' />
-        <section className='flex justify-center items-center gap-2'>
+        <section className='flex flex-wrap justify-center items-center gap-2'>
           <span className='text-gray-400'>Não tem uma conta?</span>
           <Link to='/sign-up' className='text-indigo-400 hover:text-indigo-500 transition-colors'>
             Cadastre-se
