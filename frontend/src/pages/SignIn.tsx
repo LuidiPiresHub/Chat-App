@@ -3,38 +3,23 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ISignInForm,  signInSchema} from '../schemas/signIn';
-import { useMutation } from '@tanstack/react-query';
-// import { api } from '../config/axios';
-import useAuth from '../hooks/useAuth';
+import { signInSchema} from '../schemas/signIn';
+import useSignIn from '../hooks/useSignIn';
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(signInSchema) });
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: async (data: ISignInForm) => {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      // return await api.post('/login', data);
-      return { status: 200, message: 'Login Aprovado', data };
-    }
-  })
-  const { setIsAuthenticated } = useAuth();
+  const { mutate: userSignIn, isPending } = useSignIn();
 
   const changePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
-  };
-
-  const userLogin = async (data: ISignInForm) => {
-    const res = await mutateAsync(data);
-    console.log(res);
-    setIsAuthenticated(true);
   };
 
   return (
     <main className='min-h-dvh bg-[url("assets/bgMobile.png")] bg-no-repeat bg-cover bg-fixed md:bg-[url("assets/bgDesktop.png")] flex flex-col items-center justify-center p-4'>
       <section className='bg-gray-700 p-8 sm:p-12 rounded-3xl flex flex-col gap-8'>
         <h1 className='text-5xl font-bold mb-4'>Sign In</h1>
-        <form onSubmit={handleSubmit(userLogin)} className='flex flex-col gap-4 select-none'>
+        <form onSubmit={handleSubmit((signInData) => userSignIn(signInData))} className='flex flex-col gap-4 select-none'>
           <label
             htmlFor="email"
             className='relative flex items-center gap-4 bg-indigo-400 rounded-lg'

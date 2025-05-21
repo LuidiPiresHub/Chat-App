@@ -1,6 +1,7 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import useAuth from '../hooks/useAuth';
 import LoadingScreen from '../pages/LoadingScreen';
+import { useEffect, useState } from 'react';
 
 interface IAuthGuardProps {
   isProtected?: boolean;
@@ -9,11 +10,19 @@ interface IAuthGuardProps {
 export default function AuthGuard({ isProtected = false }: IAuthGuardProps) {
   const { isAuthenticated, isLoading } = useAuth();
   const { state, pathname } = useLocation();
+  const [showLoading, setShowLoading] = useState<boolean>(false);
 
   const from = state?.from || '/';
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShowLoading(true);
+    }, 200);
+  }, [])
+
+
   if (isLoading) {
-    return <LoadingScreen />;
+    return showLoading && <LoadingScreen />;
   }
 
   if (isProtected) {

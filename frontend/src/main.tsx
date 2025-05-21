@@ -8,11 +8,11 @@ import AuthProvider from './contexts/Auth/AuthProvider.tsx'
 const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')!).render(
-  <AuthProvider>
-    <QueryClientProvider client={queryClient}>
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </QueryClientProvider>
-  </AuthProvider>
+    </AuthProvider>
+  </QueryClientProvider>
 )

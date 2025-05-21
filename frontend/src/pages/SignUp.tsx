@@ -3,10 +3,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ISignUpForm, signUpSchema } from '../schemas/signUp';
-import { useMutation } from '@tanstack/react-query';
-// import { api } from '../config/axios';
-import useAuth from '../hooks/useAuth';
+import { signUpSchema } from '../schemas/signUp';
+import useSignUp from '../hooks/useSignUp';
 
 interface IShowPassord {
   password: boolean;
@@ -16,30 +14,17 @@ interface IShowPassord {
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState<IShowPassord>({ password: false, confirmPassword: false });
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(signUpSchema) });
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: async (data: ISignUpForm) => {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      // return await api.post('/login', data);
-      return { status: 200, message: 'Registro Aprovado', data };
-    }
-  })
-  const { setIsAuthenticated } = useAuth();
+  const { mutate: userSignUp, isPending } = useSignUp();
 
   const changePasswordVisibility = (key: keyof IShowPassord) => {
     setShowPassword((prevState) => ({ ...prevState, [key]: !prevState[key] }));
-  };
-
-  const userSignUp = async (data: ISignUpForm) => {
-    const res = await mutateAsync(data);
-    console.log(res);
-    setIsAuthenticated(true);
   };
 
   return (
     <main className='min-h-dvh bg-[url("assets/bgMobile.png")] bg-no-repeat bg-cover bg-fixed md:bg-[url("assets/bgDesktop.png")] flex flex-col items-center justify-center p-4'>
       <section className='bg-gray-700 p-8 sm:p-12 rounded-3xl flex flex-col gap-8'>
         <h1 className='text-5xl font-bold mb-4'>Sign Up</h1>
-        <form onSubmit={handleSubmit(userSignUp)} className='flex flex-col gap-4 select-none'>
+        <form onSubmit={handleSubmit((signUpData) => userSignUp(signUpData))} className='flex flex-col gap-4 select-none'>
           <label
             htmlFor="username"
             className='relative flex items-center gap-4 bg-indigo-400 rounded-lg'
