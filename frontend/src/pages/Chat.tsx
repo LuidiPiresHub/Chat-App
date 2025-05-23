@@ -45,11 +45,34 @@ export default function Chat() {
   const { user } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const asideRef = useRef<HTMLDivElement | null>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartX.current = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      touchEndX.current = e.changedTouches[0].clientX;
+      if (touchStartX.current !== null && touchEndX.current !== null) {
+        const diff = touchEndX.current - touchStartX.current;
+        if (diff > 50) setIsMenuOpen(true);
+        if (diff < -50) setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
   }, []);
 
   useEffect(() => {
