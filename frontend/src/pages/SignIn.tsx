@@ -3,13 +3,17 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signInSchema} from '../schemas/signIn';
-import useSignIn from '../hooks/useSignIn';
+import { ISignInForm, signInSchema } from '../schemas/signIn';
+import { useAuthMutation } from '../hooks/useAuthMutation';
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(signInSchema) });
-  const { mutate: userSignIn, isPending } = useSignIn();
+  const { mutate: userSignIn, isPending } = useAuthMutation<ISignInForm>({
+    mutationKey: 'signIn',
+    url: '/auth/sign-in',
+    tituloErro: 'Não foi possível fazer login',
+  });
 
   const changePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
@@ -64,9 +68,7 @@ export default function SignIn() {
         <hr className='border-gray-500' />
         <section className='flex flex-wrap justify-center items-center gap-2'>
           <span className='text-gray-400'>Não tem uma conta?</span>
-          <Link to='/sign-up' className='text-indigo-400 hover:text-indigo-500 transition-colors'>
-            Cadastre-se
-          </Link>
+          <Link to='/sign-up' className='text-indigo-400 hover:text-indigo-500 transition-colors'>Cadastre-se</Link>
         </section>
       </section>
     </main>

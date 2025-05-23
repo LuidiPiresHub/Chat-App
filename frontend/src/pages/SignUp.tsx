@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signUpSchema } from '../schemas/signUp';
-import useSignUp from '../hooks/useSignUp';
+import { ISignUpForm, signUpSchema } from '../schemas/signUp';
+import { useAuthMutation } from '../hooks/useAuthMutation';
 
 interface IShowPassord {
   password: boolean;
@@ -14,7 +14,11 @@ interface IShowPassord {
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState<IShowPassord>({ password: false, confirmPassword: false });
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(signUpSchema) });
-  const { mutate: userSignUp, isPending } = useSignUp();
+  const { mutate: userSignUp, isPending } = useAuthMutation<ISignUpForm>({
+    mutationKey: 'signUp',
+    url: '/auth/sign-up',
+    tituloErro: 'Não foi possível criar a conta',
+  });
 
   const changePasswordVisibility = (key: keyof IShowPassord) => {
     setShowPassword((prevState) => ({ ...prevState, [key]: !prevState[key] }));
@@ -102,9 +106,7 @@ export default function SignUp() {
         <hr className='border-gray-500' />
         <section className='flex flex-wrap justify-center items-center gap-2'>
           <span className='text-gray-400'>Já tem uma conta?</span>
-          <Link to='/sign-in' className='text-indigo-400 hover:text-indigo-500 transition-colors'>
-            Fazer Login
-          </Link>
+          <Link to='/sign-in' className='text-indigo-400 hover:text-indigo-500 transition-colors'>Fazer Login</Link>
         </section>
       </section>
     </main>
