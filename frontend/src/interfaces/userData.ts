@@ -1,9 +1,11 @@
 export interface IUserData {
-  message: {
-    id: string;
-    username: string;
-    email: string;
-    createdAt: string;
-    updatedAt: string;
-  }
+  id: string;
+  username: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IUserResponse {
+  message: IUserData;
 }
