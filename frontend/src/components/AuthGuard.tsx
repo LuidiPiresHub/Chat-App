@@ -12,14 +12,12 @@ export default function AuthGuard({ isProtected = false }: IAuthGuardProps) {
   const { state, pathname } = useLocation();
   const [showLoading, setShowLoading] = useState<boolean>(false);
 
-  const from = state?.from || '/';
+  const from = state?.from === '/settings' ? '/' : state?.from|| '/';
 
   useEffect(() => {
-    setTimeout(() => {
-      setShowLoading(true);
-    }, 200);
+    const timer = setTimeout(() => setShowLoading(true), 200);
+    return () => clearTimeout(timer);
   }, [])
-
 
   if (isLoading) {
     return showLoading && <LoadingScreen />;
