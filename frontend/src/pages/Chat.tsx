@@ -1,5 +1,7 @@
-import { useEffect, useRef } from 'react';
-import { UserCircle2, Plus, Send } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { UserCircle2, Plus, Send, Settings, ArrowLeft } from 'lucide-react';
+import useAuth from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 export default function Chat() {
   const friends = [
@@ -40,43 +42,74 @@ export default function Chat() {
     { id: 12, sender: 'Bob', text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae, minus laboriosam pariatur eos debitis id delectus, commodi aperiam rerum exercitationem earum nam doloribus quibusdam vel mollitia ipsa itaque! Impedit, quidem.' },
   ]
 
-
+  const { user } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const asideRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (asideRef.current && !asideRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
+  if (!user) return;
+
   return (
     <main className='h-dvh flex'>
-      <aside className='w-full max-w-60 flex flex-col gap-4 border-r border-gray-800 p-4 select-none'>
+      <aside ref={asideRef} className={`bg-[#141428] h-dvh absolute ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition md:static md:translate-x-0 w-full max-w-70 flex flex-col gap-4 border-r border-gray-800 p-4 select-none`}>
         <h1 className='text-4xl font-bold'>Chat</h1>
-        <button className='bg-gray-700 rounded-lg py-3 px-3 gap-3 flex items-center w-[calc(100%-8px)]'>
+        <button className='bg-gray-700 rounded-lg py-3 px-3 gap-3 flex items-center cursor-pointer'>
           <Plus className='size-5' />
           Add Friend
         </button>
-        <section className='flex flex-1 flex-col -m-4 p-4 gap-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 hover:scrollbar-thumb-gray-400 scrollbar-track-transparent'>
+        <ul className='flex flex-1 flex-col -mx-4 px-4 gap-1 overflow-y-scroll overflow-x-hidden scrollbar'>
           {friends.map((friend) => (
-            <div key={friend.id} className={`flex items-center gap-2 cursor-pointer rounded-lg p-2 ${friend.id === 1 ? 'bg-gray-700' : ''} hover:bg-gray-700`}>
+            <li
+              key={friend.id}
+              className={`w-[calc(100%+3px)] flex items-center gap-2 cursor-pointer rounded-lg p-2 ${friend.id === 1 ? 'bg-gray-700' : ''} hover:bg-gray-800`}
+              onClick={() => setIsMenuOpen(false)}
+            >
               <UserCircle2 className='size-8' />
-              <span>{friend.name}</span>
-            </div>
+              <span className='flex-1 truncate'>{friend.name}</span>
+            </li>
           ))}
-        </section>
-        <section className='flex items-center gap-2 bg-gray-700 rounded-lg p-2'>
-          <UserCircle2 className='size-8' />
-          <span>Phantom</span>
+        </ul>
+        <section className='flex items-center justify-between gap-2 bg-gray-700 rounded-lg p-2'>
+          <div className='flex items-center gap-2 truncate flex-1'>
+            <UserCircle2 className='size-8' />
+            <span className='truncate flex-1'>{user.username}</span>
+          </div>
+          <Settings className='size-5 cursor-pointer' onClick={() => navigate('/settings')} />
         </section>
       </aside>
       <section className='w-full flex flex-col'>
         <header className='flex items-center gap-2 p-4 border-b border-gray-800'>
+          <ArrowLeft className='size-6 md:hidden cursor-pointer' onClick={() => setIsMenuOpen((prevState) => !prevState)} />
           <UserCircle2 className='size-12' />
           <h2 className='text-2xl font-bold'>Alice</h2>
         </header>
-        <section className='flex flex-1 flex-col gap-4 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 hover:scrollbar-thumb-gray-400 scrollbar-track-transparent'>
+        <section className='flex flex-1 flex-col gap-4 p-4 overflow-y-scroll scrollbar'>
           {messages.map((message) => (
             <div key={message.id} className={`flex items-center gap-2 ${message.sender === 'Alice' ? 'justify-end' : 'justify-start'}`}>
-              <p className={`rounded-lg p-3 max-w-[45%] ${message.sender === 'Alice' ? 'bg-blue-700' : 'bg-gray-700'}`}>
+              <p className={`rounded-lg p-3 max-w-[80%] sm:max-w-[60%] ${message.sender === 'Alice' ? 'bg-blue-700' : 'bg-gray-700'}`}>
                 {message.text}
               </p>
             </div>
