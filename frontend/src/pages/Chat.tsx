@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { UserCircle2, Plus, Send, Settings, ArrowLeft } from 'lucide-react';
+import { UserCircle2, Plus, Send, Settings, ArrowLeft, Search } from 'lucide-react';
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
@@ -49,6 +49,7 @@ export default function Chat() {
   const touchEndX = useRef<number | null>(null);
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>('');
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -95,6 +96,8 @@ export default function Chat() {
 
   if (!user) return;
 
+  const filteredFriends = friends.filter((friend) => friend.name.toLowerCase().includes(search.toLowerCase()));
+
   return (
     <main className='h-dvh flex'>
       <aside ref={asideRef} className={`bg-[#141428] h-dvh absolute ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition md:static md:translate-x-0 w-full max-w-70 flex flex-col gap-4 border-r border-gray-800 p-4 select-none`}>
@@ -103,8 +106,18 @@ export default function Chat() {
           <Plus className='size-5' />
           Add Friend
         </button>
+        <label htmlFor="search" className='relative'>
+          <input
+            id='search'
+            type="text"
+            placeholder='Search a friend...'
+            className='bg-gray-700 w-full p-3 rounded-lg outline-none'
+            onChange={({ target: { value }}) => setSearch(value.trim())}
+          />
+          <Search className='absolute size-5 right-4 top-1/2 transform -translate-y-1/2' />
+        </label>
         <ul className='flex flex-1 flex-col -mx-4 px-4 gap-1 overflow-y-scroll overflow-x-hidden scrollbar'>
-          {friends.map((friend) => (
+          {filteredFriends.map((friend) => (
             <li
               key={friend.id}
               className={`w-[calc(100%+3px)] flex items-center gap-2 cursor-pointer rounded-lg p-2 ${friend.id === 1 ? 'bg-gray-700' : ''} hover:bg-gray-800`}
