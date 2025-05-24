@@ -12,7 +12,7 @@ export default function AuthGuard({ isProtected = false }: IAuthGuardProps) {
   const { state, pathname } = useLocation();
   const [showLoading, setShowLoading] = useState<boolean>(false);
 
-  const from = state?.from === '/settings' ? '/' : state?.from|| '/';
+  const from = state?.from || '/';
 
   useEffect(() => {
     const timer = setTimeout(() => setShowLoading(true), 200);
