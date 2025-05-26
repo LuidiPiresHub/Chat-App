@@ -1,20 +1,30 @@
+import { useEffect, useState } from 'react';
+
+const getRandomMessage = (): string => {
+  const messages = [
+    '⌛ Chamando os devs...',
+    '🚀 Deployando as conversas...',
+    '🧠 Compilando ideias...',
+    '🔧 Inicializando sockets...',
+    '📦 Instalando dependências da conversa...',
+    '💬 Renderizando mensagens...',
+    '📡 Conectando aos servidores...',
+    '🤖 Iniciando o bot da zoeira...',
+    '🛠️ Montando os canais...',
+    '🎧 Ligando os microfones...',
+  ]
+  const randomIndex = Math.floor(Math.random() * messages.length);
+  return messages[randomIndex];
+};
+
 export default function LoadingScreen() {
-  const getRandomMessage = (): string => {
-    const messages = [
-      '⌛ Chamando os devs...',
-      '🚀 Deployando as conversas...',
-      '🧠 Compilando ideias...',
-      '🔧 Inicializando sockets...',
-      '📦 Instalando dependências da conversa...',
-      '💬 Renderizando mensagens...',
-      '📡 Conectando aos servidores...',
-      '🤖 Iniciando o bot da zoeira...',
-      '🛠️ Montando os canais...',
-      '🎧 Ligando os microfones...',
-    ]
-    const randomIndex = Math.floor(Math.random() * messages.length);
-    return messages[randomIndex];
-  };
+  const [randomMessage, setRandomMessage] = useState<string>(getRandomMessage());
+
+  useEffect(() => {
+    const THREE_SECONDS = 3000;
+    const interval = setInterval(() => setRandomMessage(getRandomMessage()), THREE_SECONDS);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <main className='min-h-dvh bg-[url("assets/bgMobile.png")] bg-no-repeat bg-cover bg-fixed md:bg-[url("assets/bgDesktop.png")] flex flex-col items-center justify-center p-8 text-center'>
@@ -31,7 +41,7 @@ export default function LoadingScreen() {
       </div>
       <p className="text-white mb-2 font-semibold text-lg">Aguarde enquanto preparamos tudo para você!</p>
       <p className="text-white mb-6 text-sm opacity-80">Isso pode levar alguns segundos...</p>
-      <p className="text-indigo-200 italic font-mono select-none">{getRandomMessage()}</p>
+      <p className="text-indigo-200 italic font-mono select-none">{randomMessage}</p>
     </main>
   )
 }
