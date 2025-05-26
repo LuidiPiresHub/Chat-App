@@ -38,11 +38,6 @@ export const useAuthMutation = <TFormData>({ url, mutationKey, tituloErro }: IUs
         color: '#E0E7FF',
         iconColor: '#F472B6',
         showCloseButton: true,
-        customClass: {
-          popup: 'rounded-xl shadow-2xl',
-          title: 'text-lg font-bold',
-          confirmButton: 'px-5 py-2',
-        },
       });
     },
   });
