@@ -83,7 +83,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
         <UserPlus2 className='size-5' />
         Amigos
       </button>
-      <SearchBar id='sidebar' placeholder='Search a friend...' setSearch={setSearch} />
+      <SearchBar id='sidebar' placeholder='Pesquise um amigo...' setSearch={setSearch} />
       <p className='text-gray-400 px-5 border-t border-t-gray-800 pt-2 -mx-4'>Mensanges diretas</p>
       <ul className='flex flex-1 flex-col -mx-4 px-4 gap-1 overflow-y-scroll overflow-x-hidden scrollbar-thin'>
         {filteredFriends.map((friend) => (

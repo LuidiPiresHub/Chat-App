@@ -31,7 +31,7 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen }: ICha
 
   const renderFriends = (friends: IFriend[]) => {
     return (
-      <section className='flex flex-col overflow-y-scroll scrollbar -mx-4 px-4'>{friends.map((friend) => (
+      <section className='flex flex-col overflow-y-scroll scrollbar -my-1 -mx-4 px-4'>{friends.map((friend) => (
         <div key={friend.id} className='flex items-center gap-2 border-t border-gray-700 p-4 select-none hover:bg-gray-800'>
           <UserCircle2 className='size-8' />
           <span>{friend.name}</span>
@@ -81,11 +81,11 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen }: ICha
           </button>
         ))}
       </header>
-      <section className='p-4 flex flex-col gap-4 flex-1 overflow-y-hidden'>
+      <section className='p-4 flex flex-col gap-5 flex-1 overflow-y-hidden'>
         {selectedTab === 'online' && (
           <>
             <h1 className='text-2xl font-bold'>Online - 5</h1>
-            <SearchBar id='online' placeholder='Search a friend...' setSearch={setSearch} />
+            <SearchBar id='online' placeholder='Pesquise um amigo...' setSearch={setSearch} />
             {renderFriends(friends.slice(0, 5).filter((friend) => friend.name.toLowerCase().includes(search.toLowerCase())))}
           </>
         )}
@@ -93,7 +93,7 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen }: ICha
         {selectedTab === 'all' && (
           <>
             <h1 className='text-2xl font-bold'>{`Todos os amigos - ${friends.length}`}</h1>
-            <SearchBar id='all' placeholder='Search a friend...' setSearch={setSearch} />
+            <SearchBar id='all' placeholder='Pesquise um amigo...' setSearch={setSearch} />
             {renderFriends(friends.filter((friend) => friend.name.toLowerCase().includes(search.toLowerCase())))}
           </>
         )}
