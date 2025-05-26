@@ -55,6 +55,7 @@ export default function Chat() {
           friends={friends}
           setIsMenuOpen={setIsMenuOpen}
           isMenuOpen={isMenuOpen}
+          setSelectedFriend={setSelectedFriend}
         />
       )}
     </main>

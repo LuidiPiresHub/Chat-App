@@ -9,6 +9,7 @@ interface IChatFriendsProps {
   friends: IFriend[];
   setIsMenuOpen: Dispatch<SetStateAction<boolean>>;
   isMenuOpen: boolean;
+  setSelectedFriend: Dispatch<SetStateAction<IFriend | null>>;
 }
 
 type Tab = 'online' | 'all' | 'add' | 'pending'
@@ -17,11 +18,11 @@ interface IFormData {
   friendRequest: string;
 }
 
-export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen }: IChatFriendsProps) {
+export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSelectedFriend }: IChatFriendsProps) {
   const [selectedTab, setSelectedTab] = useState<Tab>('online')
   const [search, setSearch] = useState<string>('')
   const { register, handleSubmit, reset } = useForm<IFormData>();
-
+  
   const headerData = [
     { key: 'online', label: 'Disponível', special: false },
     { key: 'all', label: 'Todos', special: false },
@@ -31,12 +32,17 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen }: ICha
 
   const renderFriends = (friends: IFriend[]) => {
     return (
-      <section className='flex flex-col overflow-y-scroll scrollbar -my-1 -mx-4 px-4'>{friends.map((friend) => (
-        <div key={friend.id} className='flex items-center gap-2 border-t border-gray-700 p-4 select-none hover:bg-gray-800'>
-          <UserCircle2 className='size-8' />
-          <span>{friend.name}</span>
-        </div>
-      ))}
+      <section className='flex flex-col overflow-y-scroll scrollbar -my-1 -mx-4 px-4'>
+        {friends.map((friend) => (
+          <div
+            key={friend.id}
+            onClick={() => setSelectedFriend(friend)}
+            className='flex items-center gap-2 border-t border-gray-700 p-4 select-none hover:bg-gray-800 cursor-pointer'
+          >
+            <UserCircle2 className='size-8' />
+            <span>{friend.name}</span>
+          </div>
+        ))}
       </section>
     )
   }
@@ -75,7 +81,7 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen }: ICha
           <button
             key={key}
             onClick={() => setSelectedTab(key as Tab)}
-            className={`rounded-lg py-1 px-3 cursor-pointer min-w-max ${special ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : 'text-gray-300 hover:bg-gray-700'} ${selectedTab === key ? 'bg-gray-700' : ''}`.trim()}
+            className={`rounded-lg py-1 px-3 cursor-pointer transition-colors min-w-max ${special ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : 'text-gray-300 hover:bg-gray-700'} ${selectedTab === key ? 'bg-gray-700' : ''}`.trim()}
           >
             {label}
           </button>

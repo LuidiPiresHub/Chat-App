@@ -16,6 +16,7 @@ interface IChatSidebarProps {
 
 export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelectedFriend, selectedFriend, friends }: IChatSidebarProps) {
   const asideRef = useRef<HTMLDivElement | null>(null);
+  const currentFriendRef = useRef<HTMLLIElement | null>(null);
   const [search, setSearch] = useState<string>('');
   const navigate = useNavigate();
 
@@ -45,7 +46,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
   }, [setIsMenuOpen]);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+    const handleClickOutside = (event: TouchEvent) => {
       if (asideRef.current && !asideRef.current.contains(event.target as Node)) {
         setIsMenuOpen(false);
       }
@@ -59,6 +60,12 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
       document.removeEventListener('touchstart', handleClickOutside);
     };
   }, [isMenuOpen, setIsMenuOpen]);
+
+  useEffect(() => {
+    if (selectedFriend) {
+      currentFriendRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [selectedFriend])
 
   const handleFriendClick = (friend: IFriend) => {
     if (friend.id === selectedFriend?.id) return;
@@ -89,6 +96,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
         {filteredFriends.map((friend) => (
           <li
             key={friend.id}
+            ref={friend.id === selectedFriend?.id ? currentFriendRef : null}
             className={`w-[calc(100%+3px)] flex items-center gap-2 cursor-pointer rounded-lg p-2 ${friend.id === selectedFriend?.id ? 'bg-gray-700' : 'bg-transparent'} hover:bg-gray-800`}
             onClick={() => handleFriendClick(friend)}
           >
