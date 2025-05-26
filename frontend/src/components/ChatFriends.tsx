@@ -32,18 +32,18 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSel
 
   const renderFriends = (friends: IFriend[]) => {
     return (
-      <section className='flex flex-col overflow-y-scroll scrollbar -my-1 -mx-4 px-4'>
+      <ul className='flex flex-col overflow-y-scroll scrollbar -my-1 -mx-4 px-4'>
         {friends.map((friend) => (
-          <div
+          <li
             key={friend.id}
             onClick={() => setSelectedFriend(friend)}
             className='flex items-center gap-2 border-t border-gray-700 p-4 select-none hover:bg-gray-800 cursor-pointer'
           >
             <UserCircle2 className='size-8' />
-            <span>{friend.name}</span>
-          </div>
+            <span className='flex-1 truncate'>{friend.name}</span>
+          </li>
         ))}
-      </section>
+      </ul>
     )
   }
 
