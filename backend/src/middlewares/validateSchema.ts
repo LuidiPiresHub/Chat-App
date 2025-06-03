@@ -15,7 +15,7 @@ export const validateSchema = (zodSchema: Schema) => {
 
       return;
     }
-    
+
     next();
-  }
+  };
 };

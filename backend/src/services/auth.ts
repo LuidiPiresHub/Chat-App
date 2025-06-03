@@ -20,7 +20,7 @@ const signUp = async ({ username, email, password }: ISignUp): Promise<IService<
       omit: {
         password: true,
       }
-    })
+    });
 
     const token = generateToken(user.id);
 

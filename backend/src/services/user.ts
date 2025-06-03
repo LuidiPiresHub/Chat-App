@@ -17,8 +17,8 @@ export const getUserById = async (userId: string): Promise<IService<Omit<User, '
   }
 
   return { type: 'OK', message: user };
-}
+};
 
 export default {
   getUserById,
-}
+};

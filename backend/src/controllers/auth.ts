@@ -27,12 +27,12 @@ const signIn = async (req: Request, res: Response): Promise<void> => {
     res.cookie('token', token, cookieOptions);
   }
   res.status(mapStatus(type)).json({ message });
-}
+};
 
 const getUserData = async (req: Request, res: Response): Promise<void> => {
   const { user } = req;
   res.status(mapStatus('OK')).json({ message: user });
-}
+};
 
 const logout = async (_req: Request, res: Response): Promise<void> => {
   const { maxAge: _, ...clearCookieOptions } = cookieOptions;
@@ -45,4 +45,4 @@ export default {
   signIn,
   getUserData,
   logout
-}
+};

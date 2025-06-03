@@ -28,4 +28,4 @@ export const validateToken = async (req: Request, res: Response, next: NextFunct
   req.user = user.message;
 
   next();
-}
+};
