@@ -4,6 +4,7 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 import stylistic from '@stylistic/eslint-plugin';
+import react from 'eslint-plugin-react';
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -18,6 +19,7 @@ export default tseslint.config(
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       '@stylistic': stylistic,
+      'react': react,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -32,7 +34,8 @@ export default tseslint.config(
       '@stylistic/no-extra-semi': 'error',
       '@stylistic/no-trailing-spaces': 'error',
       '@stylistic/no-multi-spaces': 'error',
-      '@stylistic/linebreak-style': ['error', 'unix']
+      '@stylistic/linebreak-style': ['error', 'unix'],
+      "react/button-has-type": 'error'
     },
   },
 )
