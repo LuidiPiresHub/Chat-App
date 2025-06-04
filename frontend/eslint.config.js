@@ -3,6 +3,7 @@ import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
+import stylistic from '@stylistic/eslint-plugin';
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -16,6 +17,7 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      '@stylistic': stylistic,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -23,6 +25,14 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      '@stylistic/quotes': ['error', 'single', { avoidEscape: true }],
+      '@stylistic/semi': ['error', 'always'],
+      '@stylistic/indent': ['error', 2],
+      '@stylistic/eol-last': ['error', 'always'],
+      '@stylistic/no-extra-semi': 'error',
+      '@stylistic/no-trailing-spaces': 'error',
+      '@stylistic/no-multi-spaces': 'error',
+      '@stylistic/linebreak-style': ['error', 'unix']
     },
   },
 )
