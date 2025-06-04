@@ -110,5 +110,5 @@ export default function SignUp() {
         </section>
       </section>
     </main>
-  )
+  );
 }

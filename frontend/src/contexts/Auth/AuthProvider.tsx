@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode, useState } from 'react';
 import { AuthContext } from './AuthContext';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../config/axios';
@@ -15,15 +15,15 @@ export default function AuthProvider({ children }: IAuthProviderProps) {
     retry: false,
     refetchOnWindowFocus: false,
     queryFn: async () => {
-      const { data } = await api.get<IUserResponse>('/auth/me')
+      const { data } = await api.get<IUserResponse>('/auth/me');
       setIsAuthenticated(true);
       return data.message;
     }
-  })
+  });
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, isLoading, user }}>
       {children}
     </AuthContext.Provider>
-  )
+  );
 }

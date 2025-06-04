@@ -1,6 +1,6 @@
-import { Dispatch, SetStateAction, useState } from 'react'
-import { UserCircle2, UserPlus2 } from 'lucide-react'
-import { IFriend } from '../interfaces/friend'
+import { Dispatch, SetStateAction, useState } from 'react';
+import { UserCircle2, UserPlus2 } from 'lucide-react';
+import { IFriend } from '../interfaces/friend';
 import SearchBar from './SearchBar';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
@@ -12,23 +12,23 @@ interface IChatFriendsProps {
   setSelectedFriend: Dispatch<SetStateAction<IFriend | null>>;
 }
 
-type Tab = 'online' | 'all' | 'add' | 'pending'
+type Tab = 'online' | 'all' | 'add' | 'pending';
 
 interface IFormData {
   friendRequest: string;
 }
 
 export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSelectedFriend }: IChatFriendsProps) {
-  const [selectedTab, setSelectedTab] = useState<Tab>('online')
-  const [search, setSearch] = useState<string>('')
+  const [selectedTab, setSelectedTab] = useState<Tab>('online');
+  const [search, setSearch] = useState<string>('');
   const { register, handleSubmit, reset } = useForm<IFormData>();
-  
+
   const headerData = [
     { key: 'online', label: 'Disponível', special: false },
     { key: 'all', label: 'Todos', special: false },
     { key: 'pending', label: 'Pendentes', special: false },
     { key: 'add', label: 'Adicionar Amigo', special: true }
-  ]
+  ];
 
   const renderFriends = (friends: IFriend[]) => {
     return (
@@ -44,14 +44,14 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSel
           </li>
         ))}
       </ul>
-    )
-  }
+    );
+  };
 
   const handleMenuOpen = () => {
     if (!isMenuOpen) {
       setIsMenuOpen(true);
     }
-  }
+  };
 
   const sendFriendRequest = (formData: IFormData) => {
     const friendNick = formData.friendRequest.trim();
@@ -66,9 +66,9 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSel
       color: '#E0E7FF',
       iconColor: '#F472B6',
       showCloseButton: true,
-    })
+    });
     reset();
-  }
+  };
 
   return (
     <section className='flex flex-col flex-1 overflow-x-hidden'>
@@ -130,5 +130,5 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSel
         )}
       </section>
     </section>
-  )
+  );
 }

@@ -63,9 +63,9 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
 
   useEffect(() => {
     if (selectedFriend) {
-      currentFriendRef.current?.scrollIntoView({ behavior: 'smooth' })
+      currentFriendRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [selectedFriend])
+  }, [selectedFriend]);
 
   const handleFriendClick = (friend: IFriend) => {
     if (friend.id === selectedFriend?.id) return;
@@ -113,5 +113,5 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
         <Settings className='size-5 cursor-pointer' onClick={() => navigate('/settings')} />
       </section>
     </aside>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import LoadingScreen from '../pages/LoadingScreen';
 import { useEffect, useState } from 'react';
@@ -17,7 +17,7 @@ export default function AuthGuard({ isProtected = false }: IAuthGuardProps) {
   useEffect(() => {
     const timer = setTimeout(() => setShowLoading(true), 200);
     return () => clearTimeout(timer);
-  }, [])
+  }, []);
 
   if (isLoading) {
     return showLoading && <LoadingScreen />;

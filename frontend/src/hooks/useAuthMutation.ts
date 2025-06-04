@@ -41,4 +41,4 @@ export const useAuthMutation = <TFormData>({ url, mutationKey, tituloErro }: IUs
       });
     },
   });
-}
+};

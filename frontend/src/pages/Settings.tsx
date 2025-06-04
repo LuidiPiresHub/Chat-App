@@ -1,22 +1,22 @@
-import useLogout from '../hooks/useLogout'
-import useAuth from '../hooks/useAuth'
-import { MoveLeft } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import useLogout from '../hooks/useLogout';
+import useAuth from '../hooks/useAuth';
+import { MoveLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Settings() {
-  const { user } = useAuth()
-  const { mutate: logout } = useLogout()
+  const { user } = useAuth();
+  const { mutate: logout } = useLogout();
   const navigate = useNavigate();
 
   if (!user) return;
 
   const formatDate = (dateString: string): string => {
-    const date = new Date(dateString)
-    const day = String(date.getDate()).padStart(2, '0')
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const year = date.getFullYear()
-    return `${day}/${month}/${year}`
-  }
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
 
   return (
     <main className="min-h-dvh p-4 bg-[#141428] text-white">
@@ -47,5 +47,5 @@ export default function Settings() {
         </button>
       </section>
     </main>
-  )
+  );
 }

@@ -72,5 +72,5 @@ export default function SignIn() {
         </section>
       </section>
     </main>
-  )
+  );
 }

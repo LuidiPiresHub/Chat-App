@@ -32,7 +32,7 @@ export default function ChatSection({ setIsMenuOpen, selectedFriend, user }: ICh
       { id: 10, senderId: user.id, sender: `${user.username}`, text: 'That is awesome!', time: now },
       { id: 11, senderId: selectedFriend.id, sender: `${selectedFriend.name}`, text: `Now I have to go, goodbye ${user.username}`, time: now },
       { id: 12, senderId: user.id, sender: `${user.username}`, text: `see you later ${selectedFriend.name}`, time: now },
-    ]
+    ];
   }, [user, selectedFriend]);
 
   const [messages, setMessages] = useState(messageInitialState);
@@ -41,11 +41,11 @@ export default function ChatSection({ setIsMenuOpen, selectedFriend, user }: ICh
   const { register, handleSubmit, reset, setFocus } = useForm<IFormData>();
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'instant' });
   }, []);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function ChatSection({ setIsMenuOpen, selectedFriend, user }: ICh
 
 
   const sendMessage = (formData: IFormData) => {
-    const message = formData.message.trim()
+    const message = formData.message.trim();
     if (!message) return;
     setMessages((prevState) => ([
       ...prevState,
@@ -66,9 +66,9 @@ export default function ChatSection({ setIsMenuOpen, selectedFriend, user }: ICh
         text: message,
         time: getHours(),
       }
-    ]))
+    ]));
     reset();
-  }
+  };
 
   return (
     <section className='w-full flex flex-col'>
@@ -112,5 +112,5 @@ export default function ChatSection({ setIsMenuOpen, selectedFriend, user }: ICh
         </button>
       </form>
     </section>
-  )
+  );
 }

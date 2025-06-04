@@ -12,7 +12,7 @@ const getRandomMessage = (): string => {
     '🤖 Iniciando o bot da zoeira...',
     '🛠️ Montando os canais...',
     '🎧 Ligando os microfones...',
-  ]
+  ];
   const randomIndex = Math.floor(Math.random() * messages.length);
   return messages[randomIndex];
 };
@@ -43,5 +43,5 @@ export default function LoadingScreen() {
       <p className="text-white mb-6 text-sm opacity-80">Isso pode levar alguns segundos...</p>
       <p className="text-indigo-200 italic font-mono select-none">{randomMessage}</p>
     </main>
-  )
+  );
 }

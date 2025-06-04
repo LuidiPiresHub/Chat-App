@@ -1,5 +1,5 @@
-import { Search } from 'lucide-react'
-import { Dispatch, SetStateAction } from 'react'
+import { Search } from 'lucide-react';
+import { Dispatch, SetStateAction } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 
@@ -26,5 +26,5 @@ export default function SearchBar({ setSearch, id, placeholder, labelClass, inpu
       />
       <Search className='absolute size-5 right-4 top-1/2 transform -translate-y-1/2' />
     </label>
-  )
+  );
 }

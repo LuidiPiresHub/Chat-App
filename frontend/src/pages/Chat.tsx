@@ -32,7 +32,7 @@ export default function Chat() {
     { id: 18, name: 'Victor' },
     { id: 19, name: 'Walter' },
     { id: 20, name: 'Xena' },
-  ]
+  ];
 
   return (
     <main className='h-dvh flex'>
@@ -59,5 +59,5 @@ export default function Chat() {
         />
       )}
     </main>
-  )
+  );
 }
