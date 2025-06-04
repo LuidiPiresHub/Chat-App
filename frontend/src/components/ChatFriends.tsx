@@ -80,6 +80,7 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSel
         {headerData.map(({ key, label, special }) => (
           <button
             key={key}
+            type='button'
             onClick={() => setSelectedTab(key as Tab)}
             className={`rounded-lg py-1 px-3 cursor-pointer transition-colors min-w-max ${special ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : 'text-gray-300 hover:bg-gray-700'} ${selectedTab === key ? 'bg-gray-700' : ''}`.trim()}
           >
@@ -122,7 +123,7 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSel
                 inputClass='pr-13'
                 register={register('friendRequest')}
               />
-              <button className='bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition'>
+              <button type='submit' className='bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition'>
                 Enviar
               </button>
             </form>

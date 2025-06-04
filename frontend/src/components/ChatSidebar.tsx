@@ -84,6 +84,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
     <aside ref={asideRef} className={`bg-[#141428] h-dvh absolute z-1 ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition md:static md:translate-x-0 w-full max-w-70 flex flex-col gap-4 border-r border-gray-800 p-4 select-none`}>
       <h1 className='text-4xl font-bold'>Chat App</h1>
       <button
+        type='button'
         onClick={handleAddFriend}
         className='bg-gray-700 rounded-lg py-2 px-3 gap-3 flex items-center cursor-pointer'
       >

@@ -40,6 +40,7 @@ export default function Settings() {
           <p><span className="text-gray-400">Atualizado em:</span> {formatDate(user.updatedAt)}</p>
         </section>
         <button
+          type='button'
           className="w-full bg-red-600 hover:bg-red-700 px-4 py-2 rounded"
           onClick={() => logout()}
         >
