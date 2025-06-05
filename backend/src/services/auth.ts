@@ -1,7 +1,7 @@
 import { prisma } from '../config/prisma';
 import { User } from '@prisma/client';
 import { IService } from '../interfaces/service';
-import { ISignIn, ISignUp } from '../interfaces/user';
+import { ISignIn, ISignUp } from '../interfaces/auth';
 import bcrypt from 'bcrypt';
 import { IPrismaError } from '../interfaces/prisma';
 import { generateToken } from '../auth/jwtFunctions';
