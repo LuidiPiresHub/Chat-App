@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { IUserResponse } from '../interfaces/userData';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userDisplayNameSchema } from '../schemas/displayName';
+import { AxiosError } from 'axios';
 
 interface IUpdateDisplayName {
   displayName: string;
@@ -25,7 +26,7 @@ export default function Settings() {
   const { mutate: updateDisplayName } = useMutation({
     mutationKey: ['updateDisplayName'],
     mutationFn: async (displayName: IUpdateDisplayName) => {
-      const { data } = await api.put<IUserResponse>('/user/displayName', displayName );
+      const { data } = await api.put<IUserResponse>('/user/display-name', displayName );
       return data.message;
     },
     onSuccess: (updatedUser) => {
@@ -36,8 +37,9 @@ export default function Settings() {
       queryClient.setQueryData(['auth'], updatedUser);
       reset();
     },
-    onError: () => {
-      toast('Erro ao atualizar DisplayName!', {
+    onError: ({ response }: AxiosError<{ message: string }>) => {
+      const errorMessage = response?.data.message || 'Erro Interno do servidor';
+      toast(`Erro ao atualizar DisplayName! \n ${errorMessage}`, {
         type: 'error',
         theme: 'colored'
       });
@@ -51,7 +53,10 @@ export default function Settings() {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${day}/${month}/${year} - ${hours}:${minutes}:${seconds}`;
   };
 
   return (

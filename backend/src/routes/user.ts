@@ -7,6 +7,6 @@ import { userDisplayNameSchema } from '../schemas/user';
 const userRouter = Router();
 
 userRouter.get('/:id', userController.getUserById);
-userRouter.put('/displayName', validateToken, validateSchema(userDisplayNameSchema), userController.updateDisplayName);
+userRouter.put('/display-name', validateToken, validateSchema(userDisplayNameSchema), userController.updateDisplayName);
 
 export default userRouter;

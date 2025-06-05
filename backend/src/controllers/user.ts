@@ -11,8 +11,8 @@ const getUserById = async (req: Request, res: Response): Promise<void> => {
 
 const updateDisplayName = async (req: Request, res: Response): Promise<void> => {
   const { displayName } = req.body;
-  const { id } = req.user as User;
-  const { type, message } = await userService.updateDisplayName(displayName, id);
+  const { user } = req;
+  const { type, message } = await userService.updateDisplayName(displayName, user as User);
   res.status(mapStatus(type)).json({ message });
 };
 
