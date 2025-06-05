@@ -4,6 +4,8 @@ import { IFriend } from '../interfaces/friend';
 import SearchBar from './SearchBar';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
+import { motion } from 'framer-motion';
+import { createContainer, createItem } from '../utils/motionVariants';
 
 interface IChatFriendsProps {
   friends: IFriend[];
@@ -34,14 +36,15 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSel
     return (
       <ul className='flex flex-col overflow-y-scroll scrollbar -my-1 -mx-4 px-4'>
         {friends.map((friend) => (
-          <li
+          <motion.li
             key={friend.id}
+            variants={createItem(20)}
             onClick={() => setSelectedFriend(friend)}
             className='flex items-center gap-2 border-t border-gray-700 p-4 select-none hover:bg-gray-800 cursor-pointer'
           >
             <UserCircle2 className='size-8' />
             <span className='flex-1 truncate'>{friend.name}</span>
-          </li>
+          </motion.li>
         ))}
       </ul>
     );
@@ -88,7 +91,13 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSel
           </button>
         ))}
       </header>
-      <section className='p-4 flex flex-col gap-5 flex-1 overflow-y-hidden'>
+      <motion.section
+        key={selectedTab}
+        variants={createContainer(0.05)}
+        initial="hidden"
+        animate="show"
+        className='p-4 flex flex-col gap-5 flex-1 overflow-y-hidden'
+      >
         {selectedTab === 'online' && (
           <>
             <h1 className='text-2xl font-bold'>Online - 5</h1>
@@ -129,7 +138,7 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSel
             </form>
           </div>
         )}
-      </section>
+      </motion.section>
     </section>
   );
 }
