@@ -2,7 +2,7 @@ import { User } from '@prisma/client';
 import { prisma } from '../config/prisma';
 import { IService } from '../interfaces/service';
 
-export const getUserById = async (userId: string): Promise<IService<Omit<User, 'password'> | string>> => {
+const getUserById = async (userId: string): Promise<IService<Omit<User, 'password'> | string>> => {
   const user = await prisma.user.findUnique({
     where: {
       id: userId,
@@ -19,6 +19,12 @@ export const getUserById = async (userId: string): Promise<IService<Omit<User, '
   return { type: 'OK', message: user };
 };
 
+const updateDisplayName = async (displayName: string, id: string): Promise<IService<User>> => {
+  const data = await prisma.user.update({ data: { displayName }, where: { id }});
+  return { type: 'OK', message: data };
+};
+
 export default {
   getUserById,
+  updateDisplayName
 };

@@ -1,5 +1,6 @@
 export interface IUserData {
   id: string;
+  displayName: string;
   username: string;
   email: string;
   createdAt: string;

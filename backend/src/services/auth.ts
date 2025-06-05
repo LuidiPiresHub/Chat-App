@@ -13,6 +13,7 @@ const signUp = async ({ username, email, password }: ISignUp): Promise<IService<
 
     const user = await prisma.user.create({
       data: {
+        displayName: username,
         username,
         email,
         password: hashedPassword,

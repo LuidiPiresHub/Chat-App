@@ -109,7 +109,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
       <section className='flex items-center justify-between gap-2 bg-gray-700 rounded-lg p-2'>
         <div className='flex items-center gap-2 truncate flex-1'>
           <UserCircle2 className='size-8' />
-          <span className='truncate flex-1'>{user.username}</span>
+          <span className='truncate flex-1'>{user.displayName}</span>
         </div>
         <Settings className='size-5 cursor-pointer' onClick={() => navigate('/settings')} />
       </section>

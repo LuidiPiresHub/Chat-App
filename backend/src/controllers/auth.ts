@@ -4,7 +4,7 @@ import { mapStatus } from '../utils/mapStatus';
 
 const isProd = process.env.NODE_ENV === 'production';
 
-export const cookieOptions: CookieOptions = {
+const cookieOptions: CookieOptions = {
   httpOnly: true,
   secure: isProd,
   sameSite: isProd ? 'none' : 'lax',

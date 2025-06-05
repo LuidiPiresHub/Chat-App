@@ -8,4 +8,3 @@ export const userSignInSchema = z.object({
 export const userSignUpSchema = userSignInSchema.extend({
   username: z.string().min(3, 'Usuário deve ter pelo menos 3 caracteres').regex(/^[^\d].*$/, 'Usuário não pode começar com número')
 });
-
