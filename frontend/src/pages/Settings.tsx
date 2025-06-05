@@ -8,6 +8,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../config/axios';
 import { toast } from 'react-toastify';
 import { IUserResponse } from '../interfaces/userData';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { userDisplayNameSchema } from '../schemas/displayName';
 
 interface IUpdateDisplayName {
   displayName: string;
@@ -17,7 +19,7 @@ export default function Settings() {
   const { user } = useAuth();
   const { mutate: logout } = useLogout();
   const navigate = useNavigate();
-  const { register, handleSubmit, reset } = useForm<IUpdateDisplayName>();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<IUpdateDisplayName>({ resolver: zodResolver(userDisplayNameSchema) });
   const queryClient = useQueryClient();
 
   const { mutate: updateDisplayName } = useMutation({
@@ -83,6 +85,7 @@ export default function Settings() {
           <input type="text" placeholder='Novo DisplayName' {...register('displayName')} className='bg-gray-700 rounded px-4 py-2 flex-1 outline-none' />
           <button type='submit' className='bg-blue-700 hover:bg-blue-800 rounded px-4 py-2 cursor-pointer'>Atualizar</button>
         </form>
+        {errors.displayName && <span className='text-red-600 text-center'>{errors.displayName.message}</span>}
         <button
           type='button'
           className="w-full bg-red-600 hover:bg-red-700 px-4 py-2 rounded cursor-pointer"

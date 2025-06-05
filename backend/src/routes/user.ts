@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import userController from '../controllers/user';
 import { validateToken } from '../middlewares/validateToken';
+import { validateSchema } from '../middlewares/validateSchema';
+import { userDisplayNameSchema } from '../schemas/user';
 
 const userRouter = Router();
 
 userRouter.get('/:id', userController.getUserById);
-userRouter.put('/displayName', validateToken, userController.updateDisplayName);
+userRouter.put('/displayName', validateToken, validateSchema(userDisplayNameSchema), userController.updateDisplayName);
 
 export default userRouter;
