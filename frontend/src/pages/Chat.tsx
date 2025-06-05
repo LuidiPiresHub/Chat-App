@@ -4,6 +4,7 @@ import ChatSection from '../components/ChatSection';
 import ChatSidebar from '../components/ChatSidebar';
 import { IFriend } from '../interfaces/friend';
 import ChatFriends from '../components/ChatFriends';
+import { motion } from 'framer-motion';
 
 export default function Chat() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -35,7 +36,13 @@ export default function Chat() {
   ];
 
   return (
-    <main className='h-dvh flex'>
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className='h-dvh flex'
+    >
       <ChatSidebar
         setIsMenuOpen={setIsMenuOpen}
         isMenuOpen={isMenuOpen}
@@ -58,6 +65,6 @@ export default function Chat() {
           setSelectedFriend={setSelectedFriend}
         />
       )}
-    </main>
+    </motion.main>
   );
 }

@@ -2,6 +2,7 @@ import useLogout from '../hooks/useLogout';
 import useAuth from '../hooks/useAuth';
 import { MoveLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 export default function Settings() {
   const { user } = useAuth();
@@ -19,7 +20,12 @@ export default function Settings() {
   };
 
   return (
-    <main className="min-h-dvh p-4 bg-[#141428] text-white">
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.2 }}
+      className="min-h-dvh p-4 bg-[#141428] text-white"
+    >
       <div className='flex items-center gap-4 mb-12'>
         <MoveLeft className='cursor-pointer' onClick={() => navigate('/')} />
         <h1 className="text-2xl font-semibold">Configurações da Conta</h1>
@@ -41,12 +47,12 @@ export default function Settings() {
         </section>
         <button
           type='button'
-          className="w-full bg-red-600 hover:bg-red-700 px-4 py-2 rounded"
+          className="w-full bg-red-600 hover:bg-red-700 px-4 py-2 rounded cursor-pointer"
           onClick={() => logout()}
         >
           Logout
         </button>
       </section>
-    </main>
+    </motion.main>
   );
 }
