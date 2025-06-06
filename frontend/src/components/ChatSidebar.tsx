@@ -21,6 +21,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
   const navigate = useNavigate();
 
   useEffect(() => {
+    const percentage = 40;
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -30,10 +31,12 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
     };
 
     const handleTouchEnd = (event: TouchEvent) => {
+      if ((event.target as HTMLElement).closest('[data-ignore-touch]')) return;
       touchEndX = event.changedTouches[0].clientX;
       const diff = touchEndX - touchStartX;
-      if (diff > 50) setIsMenuOpen(true);
-      if (diff < -50) setIsMenuOpen(false);
+      const threshold = Math.floor(window.innerWidth * (percentage / 100));
+      if (diff > threshold) setIsMenuOpen(true);
+      if (diff < -threshold) setIsMenuOpen(false);
     };
 
     document.addEventListener('touchstart', handleTouchStart);
@@ -109,7 +112,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
       <section className='flex items-center justify-between gap-2 bg-gray-700 rounded-lg p-2'>
         <div className='flex items-center gap-2 truncate flex-1'>
           <UserCircle2 className='size-8' />
-          <span className='truncate flex-1'>{user.displayName}</span>
+          <span className='truncate flex-1'>{user.nickname}</span>
         </div>
         <Settings className='size-5 cursor-pointer' onClick={() => navigate('/settings')} />
       </section>
