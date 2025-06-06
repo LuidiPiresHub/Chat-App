@@ -19,16 +19,16 @@ const getUserById = async (userId: string): Promise<IService<Omit<User, 'passwor
   return { type: 'OK', message: user };
 };
 
-const updateDisplayName = async (displayName: string, user: User): Promise<IService<User | string>> => {
-  if (displayName === user.displayName) {
+const updateNickname = async (nickname: string, user: User): Promise<IService<User | string>> => {
+  if (nickname === user.nickname) {
     return { type: 'BAD_REQUEST', message: 'Você já está usando esse Nickname.' };
   }
 
-  const data = await prisma.user.update({ data: { displayName }, where: { id: user.id }});
+  const data = await prisma.user.update({ data: { nickname }, where: { id: user.id }});
   return { type: 'OK', message: data };
 };
 
 export default {
   getUserById,
-  updateDisplayName
+  updateNickname
 };

@@ -9,28 +9,28 @@ import { api } from '../config/axios';
 import { toast } from 'react-toastify';
 import { IUserResponse } from '../interfaces/userData';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { userDisplayNameSchema } from '../schemas/displayName';
+import { userNicknameSchema } from '../schemas/nickname';
 import { AxiosError } from 'axios';
 
-interface IUpdateDisplayName {
-  displayName: string;
+interface IUpdateNickname {
+  nickname: string;
 }
 
 export default function Settings() {
   const { user } = useAuth();
   const { mutate: logout } = useLogout();
   const navigate = useNavigate();
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<IUpdateDisplayName>({ resolver: zodResolver(userDisplayNameSchema) });
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<IUpdateNickname>({ resolver: zodResolver(userNicknameSchema) });
   const queryClient = useQueryClient();
 
-  const { mutate: updateDisplayName } = useMutation({
-    mutationKey: ['updateDisplayName'],
-    mutationFn: async (displayName: IUpdateDisplayName) => {
-      const { data } = await api.put<IUserResponse>('/user/display-name', displayName );
+  const { mutate: updateNickname } = useMutation({
+    mutationKey: ['updateNickname'],
+    mutationFn: async (nickname: IUpdateNickname) => {
+      const { data } = await api.put<IUserResponse>('/user/nickname', nickname );
       return data.message;
     },
     onSuccess: (updatedUser) => {
-      toast('Nick atualizado com sucesso!', {
+      toast('Nickname atualizado com sucesso!', {
         type: 'success',
         theme: 'colored'
       });
@@ -39,7 +39,7 @@ export default function Settings() {
     },
     onError: ({ response }: AxiosError<{ message: string }>) => {
       const errorMessage = response?.data.message || 'Erro Interno do servidor';
-      toast(`Erro ao atualizar DisplayName! \n ${errorMessage}`, {
+      toast(`Erro ao atualizar Nickname! \n ${errorMessage}`, {
         type: 'error',
         theme: 'colored'
       });
@@ -82,15 +82,15 @@ export default function Settings() {
         </div>
         <section className="bg-neutral-800 rounded p-4 space-y-2">
           <p><span className="text-gray-400">ID:</span> {user.id}</p>
-          <p><span className="text-gray-400">DisplayName:</span> {user.displayName}</p>
+          <p><span className="text-gray-400">Nickname:</span> {user.nickname}</p>
           <p><span className="text-gray-400">Criado em:</span> {formatDate(user.createdAt)}</p>
           <p><span className="text-gray-400">Atualizado em:</span> {formatDate(user.updatedAt)}</p>
         </section>
-        <form onSubmit={handleSubmit((updateData) => updateDisplayName(updateData))} className='flex gap-4'>
-          <input type="text" placeholder='Novo DisplayName' {...register('displayName')} className='bg-gray-700 rounded px-4 py-2 flex-1 outline-none' />
+        <form onSubmit={handleSubmit((updateData) => updateNickname(updateData))} className='flex gap-4'>
+          <input type="text" placeholder='Novo Nickname' {...register('nickname')} className='bg-gray-700 rounded px-4 py-2 flex-1 outline-none' />
           <button type='submit' className='bg-blue-700 hover:bg-blue-800 rounded px-4 py-2 cursor-pointer'>Atualizar</button>
         </form>
-        {errors.displayName && <span className='text-red-600 text-center'>{errors.displayName.message}</span>}
+        {errors.nickname && <span className='text-red-600 text-center'>{errors.nickname.message}</span>}
         <button
           type='button'
           className="w-full bg-red-600 hover:bg-red-700 px-4 py-2 rounded cursor-pointer"

@@ -1,6 +1,6 @@
 export interface IUserData {
   id: string;
-  displayName: string;
+  nickname: string;
   username: string;
   email: string;
   createdAt: string;

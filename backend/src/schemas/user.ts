@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-export const userDisplayNameSchema = z.object({
-  displayName: z
+export const userNicknameSchema = z.object({
+  nickname: z
     .string()
     .min(3, 'O nick deve ter pelo menos 3 caracteres')
     .regex(/^[^\d].*$/, 'Usuário não pode começar com número')

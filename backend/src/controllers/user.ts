@@ -9,14 +9,14 @@ const getUserById = async (req: Request, res: Response): Promise<void> => {
   res.status(mapStatus(type)).json({ message });
 };
 
-const updateDisplayName = async (req: Request, res: Response): Promise<void> => {
-  const { displayName } = req.body;
+const updateNickname = async (req: Request, res: Response): Promise<void> => {
+  const { nickname } = req.body;
   const { user } = req;
-  const { type, message } = await userService.updateDisplayName(displayName, user as User);
+  const { type, message } = await userService.updateNickname(nickname, user as User);
   res.status(mapStatus(type)).json({ message });
 };
 
 export default {
   getUserById,
-  updateDisplayName
+  updateNickname
 };
