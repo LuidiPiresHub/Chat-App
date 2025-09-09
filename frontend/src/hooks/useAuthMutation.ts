@@ -8,10 +8,10 @@ import { IUserResponse } from '../interfaces/userData';
 interface IUseAuthMutationProps {
   url: string;
   mutationKey: string;
-  tituloErro: string;
+  errorTitle: string;
 }
 
-export const useAuthMutation = <TFormData>({ url, mutationKey, tituloErro }: IUseAuthMutationProps) => {
+export const useAuthMutation = <TFormData>({ url, mutationKey, errorTitle }: IUseAuthMutationProps) => {
   const { setIsAuthenticated } = useAuth();
   const queryClient = useQueryClient();
 
@@ -27,9 +27,8 @@ export const useAuthMutation = <TFormData>({ url, mutationKey, tituloErro }: IUs
     },
     onError: (error: AxiosError<{ message: string }>) => {
       const errorMessage = error.response?.data.message || 'Erro Interno do servidor';
-
       Swal.fire({
-        title: tituloErro,
+        title: errorTitle,
         text: errorMessage,
         icon: 'error',
         confirmButtonText: 'Tentar novamente',
