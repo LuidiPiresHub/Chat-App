@@ -7,6 +7,7 @@ import { ISignUpForm, signUpSchema } from '../schemas/signUp';
 import { useAuthMutation } from '../hooks/useAuthMutation';
 import { motion } from 'framer-motion';
 import { createContainer, createItem } from '../utils/motionVariants';
+import FormError from '../components/FormError';
 
 interface IShowPassord {
   password: boolean;
@@ -19,7 +20,7 @@ export default function SignUp() {
   const { mutate: userSignUp, isPending } = useAuthMutation<ISignUpForm>({
     mutationKey: 'signUp',
     url: '/auth/sign-up',
-    tituloErro: 'Não foi possível criar a conta',
+    errorTitle: 'Não foi possível criar a conta',
   });
 
   const changePasswordVisibility = (key: keyof IShowPassord) => {
@@ -61,15 +62,7 @@ export default function SignUp() {
               className='py-4 px-14 w-full outline-none placeholder:text-white'
             />
           </motion.label>
-          {errors.username && (
-            <motion.span
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className='text-red-500'
-            >
-              {errors.username.message}
-            </motion.span>
-          )}
+          <FormError fieldError={errors.username} />
           <motion.label
             htmlFor="email"
             className='relative flex items-center gap-4 bg-indigo-400 rounded-lg'
@@ -85,15 +78,7 @@ export default function SignUp() {
               className='py-4 px-14 w-full outline-none placeholder:text-white'
             />
           </motion.label>
-          {errors.email && (
-            <motion.span
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className='text-red-500'
-            >
-              {errors.email.message}
-            </motion.span>
-          )}
+          <FormError fieldError={errors.email} />
           <motion.label
             htmlFor="password"
             className='relative flex items-center gap-4 bg-indigo-400 rounded-lg'
@@ -114,15 +99,7 @@ export default function SignUp() {
               <EyeIcon onClick={() => changePasswordVisibility('password')} className='absolute right-4 cursor-pointer' />
             )}
           </motion.label>
-          {errors.password && (
-            <motion.span
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className='text-red-500'
-            >
-              {errors.password.message}
-            </motion.span>
-          )}
+          <FormError fieldError={errors.password} />
           <motion.label
             htmlFor="confirmPassword"
             className='relative flex items-center gap-4 bg-indigo-400 rounded-lg'
@@ -143,15 +120,7 @@ export default function SignUp() {
               <EyeIcon onClick={() => changePasswordVisibility('confirmPassword')} className='absolute right-4 cursor-pointer' />
             )}
           </motion.label>
-          {errors.confirmPassword && (
-            <motion.span
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className='text-red-500'
-            >
-              {errors.confirmPassword.message}
-            </motion.span>
-          )}
+          <FormError fieldError={errors.confirmPassword} />
           <motion.button
             type='submit'
             disabled={isPending}

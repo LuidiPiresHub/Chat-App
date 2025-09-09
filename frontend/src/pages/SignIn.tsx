@@ -7,6 +7,7 @@ import { ISignInForm, signInSchema } from '../schemas/signIn';
 import { useAuthMutation } from '../hooks/useAuthMutation';
 import { motion } from 'framer-motion';
 import { createContainer, createItem } from '../utils/motionVariants';
+import FormError from '../components/FormError';
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,7 +15,7 @@ export default function SignIn() {
   const { mutate: userSignIn, isPending } = useAuthMutation<ISignInForm>({
     mutationKey: 'signIn',
     url: '/auth/sign-in',
-    tituloErro: 'Não foi possível fazer login',
+    errorTitle: 'Não foi possível fazer login',
   });
 
   const changePasswordVisibility = () => setShowPassword(prev => !prev);
@@ -59,15 +60,7 @@ export default function SignIn() {
               className='py-4 px-14 w-full outline-none placeholder:text-white bg-transparent'
             />
           </motion.label>
-          {errors.email && (
-            <motion.span
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className='text-red-500'
-            >
-              {errors.email.message}
-            </motion.span>
-          )}
+          <FormError fieldError={errors.email} />
           <motion.label
             htmlFor="password"
             className='relative flex items-center gap-4 bg-indigo-400 rounded-lg'
@@ -88,15 +81,7 @@ export default function SignIn() {
               <EyeIcon onClick={changePasswordVisibility} className='absolute right-4 cursor-pointer' />
             )}
           </motion.label>
-          {errors.password && (
-            <motion.span
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className='text-red-500'
-            >
-              {errors.password.message}
-            </motion.span>
-          )}
+          <FormError fieldError={errors.password} />
           <motion.button
             type='submit'
             disabled={isPending}
@@ -108,9 +93,7 @@ export default function SignIn() {
             {isPending ? <Loader className='animate-spin h-7 w-7' /> : 'Entrar'}
           </motion.button>
         </motion.form>
-
         <hr className='border-gray-500' />
-
         <motion.section
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
