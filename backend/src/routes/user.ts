@@ -6,7 +6,10 @@ import { userNicknameSchema } from '../schemas/user';
 
 const userRouter = Router();
 
-userRouter.get('/:id', userController.getUserById);
 userRouter.put('/nickname', validateToken, validateSchema(userNicknameSchema), userController.updateNickname);
+userRouter.post('/friend-request', validateToken, userController.sendFriendRequest);
+userRouter.get('/friends-requests', validateToken, userController.getFriendsRequests);
+userRouter.delete('/friend-request/:friendRequestId/deny', validateToken, userController.denyFriendRequest);
+userRouter.post('/friend-request/:friendRequestId/accept', validateToken, userController.acceptFriendRequest);
 
 export default userRouter;
