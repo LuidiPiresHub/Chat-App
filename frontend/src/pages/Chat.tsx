@@ -9,9 +9,8 @@ import { motion } from 'framer-motion';
 export default function Chat() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [selectedFriend, setSelectedFriend] = useState<IFriend | null>(null);
-  const { user } = useAuth();
-  if (!user) return;
-
+  const auth = useAuth();
+  const user = auth.user!;
   const friends = [
     { id: 1, name: 'Alice' },
     { id: 2, name: 'Bob' },

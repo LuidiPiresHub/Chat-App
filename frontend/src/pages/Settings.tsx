@@ -17,7 +17,8 @@ interface IUpdateNickname {
 }
 
 export default function Settings() {
-  const { user } = useAuth();
+  const auth = useAuth();
+  const user = auth.user!;
   const { mutate: logout } = useLogout();
   const navigate = useNavigate();
   const { register, handleSubmit, reset, formState: { errors } } = useForm<IUpdateNickname>({ resolver: zodResolver(userNicknameSchema) });
@@ -45,8 +46,6 @@ export default function Settings() {
       });
     }
   });
-
-  if (!user) return;
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
