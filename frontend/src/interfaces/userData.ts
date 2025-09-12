@@ -10,3 +10,16 @@ export interface IUserData {
 export interface IUserResponse {
   message: IUserData;
 }
+
+export type IUsername = Pick<IUserData, 'username'>;
+
+export interface IPendingFriends {
+  id: string;
+  nickname: string;
+  friendRequestId: string
+  createdAt: string;
+}
+
+export interface IPendingFriendsResponse {
+  message: IPendingFriends[] | null
+}
