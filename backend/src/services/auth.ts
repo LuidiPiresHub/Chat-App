@@ -1,10 +1,11 @@
 import { prisma } from '../config/prisma';
 import { User } from '@prisma/client';
 import { IService } from '../interfaces/service';
-import { ISignIn, ISignUp } from '../interfaces/auth';
+import { IGetuserDataResponse, ISignIn, ISignUp } from '../interfaces/auth';
 import bcrypt from 'bcrypt';
 import { IPrismaError } from '../interfaces/prisma';
-import { generateToken } from '../auth/jwtFunctions';
+import { generateToken, verifyToken } from '../auth/jwtFunctions';
+import userService from '../services/user';
 
 const signUp = async ({ username, email, password }: ISignUp): Promise<IService<Omit<User, 'password'> | string>> => {
   try {
@@ -59,7 +60,23 @@ const signIn = async ({ email, password }: ISignIn): Promise<IService<Omit<User,
   return { type: 'OK', message: userWithoutPassword, token };
 };
 
+const getUserData = async (token: string): Promise<IService<IGetuserDataResponse>> => {
+  const decoded = verifyToken(token);
+  if (!decoded) {
+    return { type: 'OK', message: { isAuthenticated: false, user: null } };
+  }
+
+  const user = await userService.getUserById(decoded.id);
+
+  if (user.type !== 'OK' || typeof user.message === 'string') {
+    return { type: 'OK', message: { isAuthenticated: false, user: null } };
+  }
+
+  return { type: 'OK', message: { isAuthenticated: true, user: user.message } };
+};
+
 export default {
   signUp,
   signIn,
+  getUserData
 };

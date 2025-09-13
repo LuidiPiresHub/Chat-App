@@ -30,8 +30,9 @@ const signIn = async (req: Request, res: Response): Promise<void> => {
 };
 
 const getUserData = async (req: Request, res: Response): Promise<void> => {
-  const { user } = req;
-  res.status(mapStatus('OK')).json({ message: user });
+  const { token } = req.cookies;
+  const { type, message } = await authService.getUserData(token);
+  res.status(mapStatus(type)).json({ message });
 };
 
 const logout = async (_req: Request, res: Response): Promise<void> => {
