@@ -31,10 +31,3 @@ export interface IUserResponse {
 }
 
 export type IUsername = Pick<IUserData, 'username'>;
-
-export interface IPendingFriends {
-  id: string;
-  nickname: string;
-  friendRequestId: string
-  createdAt: Date;
-}

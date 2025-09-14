@@ -2,10 +2,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import { api } from '../config/axios';
 import { UseFormReset } from 'react-hook-form';
-import { IPendingFriends, IUsername } from '../interfaces/userData';
+import { IUserData, IUsername } from '../interfaces/userData';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
-import useAuth from './useAuth';
 
 interface ISendFriendRequest {
   username: string
@@ -13,8 +12,6 @@ interface ISendFriendRequest {
 }
 
 export const useFriendRequest = () => {
-  const auth = useAuth();
-  const user = auth.user!;
   const queryClient = useQueryClient();
 
   const sendFriendRequest = useMutation({
@@ -54,10 +51,19 @@ export const useFriendRequest = () => {
   const acceptFriendRequest = useMutation({
     mutationKey: ['acceptFriendRequest'],
     onMutate: async ({ friendRequestId }) => {
-      const previousData = queryClient.getQueryData<IPendingFriends[]>(['pendingFriend', user.id]);
-      queryClient.setQueryData<IPendingFriends[]>(['pendingFriend', user.id], (old) => {
-        return old?.filter((req) => req.friendRequestId !== friendRequestId) ?? [];
+      const previousData = queryClient.getQueryData<IUserData>(['auth']);
+      queryClient.setQueryData<IUserData>(['auth'], (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          receivedRequests: old.receivedRequests.filter(req => req.id !== friendRequestId),
+          friends: [
+            ...old.friends,
+            old.receivedRequests.find((req) => req.id === friendRequestId)!.sender
+          ]
+        };
       });
+
       return { previousData };
     },
     mutationFn: async ({ friendId, friendRequestId }: IAcceptFriendRequest) => {
@@ -66,7 +72,7 @@ export const useFriendRequest = () => {
     },
     onError: (error: AxiosError<{ message: string }>, _, context) => {
       if (context?.previousData) {
-        queryClient.setQueryData(['pendingFriend', user.id], context.previousData);
+        queryClient.setQueryData(['auth'], context.previousData);
       }
       const errorMessage = error.response?.data.message || 'Erro Interno do servidor';
       toast(errorMessage, {
@@ -76,22 +82,39 @@ export const useFriendRequest = () => {
     }
   });
 
+  interface IDenyFriendRequest {
+    friendRequestId: string;
+    type: 'received' | 'sent';
+  }
+
   const denyFriendRequest = useMutation({
-    mutationKey: ['acceptFriendRequest'],
-    onMutate: async (friendRequestId) => {
-      const previousData = queryClient.getQueryData<IPendingFriends[]>(['pendingFriend',user.id]);
-      queryClient.setQueryData<IPendingFriends[]>(['pendingFriend', user.id], (old) => {
-        return old?.filter((req) => req.friendRequestId !== friendRequestId) ?? [];
+    mutationKey: ['denyFriendRequest'],
+    onMutate: async ({ friendRequestId, type }) => {
+      const previousData = queryClient.getQueryData<IUserData>(['auth']);
+      queryClient.setQueryData<IUserData>(['auth'], (old) => {
+        if (!old) return old;
+
+        if (type === 'received') {
+          return {
+            ...old,
+            receivedRequests: old.receivedRequests.filter((req) => req.id !== friendRequestId),
+          };
+        }
+
+        return {
+          ...old,
+          sentRequests: old.sentRequests.filter((req) => req.id !== friendRequestId)
+        };
       });
       return { previousData };
     },
-    mutationFn: async (friendRequestId: string) => {
+    mutationFn: async ({ friendRequestId }: IDenyFriendRequest) => {
       const { data } = await api.delete<{ message: string }>(`/user/friend-request/${friendRequestId}/deny`);
       return data.message;
     },
     onError: (error: AxiosError<{ message: string }>, _, context) => {
       if (context?.previousData) {
-        queryClient.setQueryData(['pendingFriend', user.id], context.previousData);
+        queryClient.setQueryData(['auth'], context.previousData);
       }
       const errorMessage = error.response?.data.message || 'Erro Interno do servidor';
       toast(errorMessage, {

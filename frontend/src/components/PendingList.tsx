@@ -30,30 +30,18 @@ export default function PendingList({ data, type }: RenderListProps) {
           >
             <UserCircle2 className="size-8" />
             <span className="flex-1 truncate">{friend.nickname}</span>
-            {type === 'received' ? (
-              <div className="flex">
+            <div className="flex">
+              {type === 'received' && (
                 <CheckIcon
                   className="size-9 p-2 rounded-full hover:bg-gray-700"
-                  onClick={() =>
-                    acceptFriendRequest.mutate({
-                      friendId: friend.id,
-                      friendRequestId,
-                    })
-                  }
+                  onClick={() => acceptFriendRequest.mutate({ friendId: friend.id, friendRequestId })}
                 />
-                <X
-                  className="size-9 p-2 rounded-full hover:bg-gray-700"
-                  onClick={() => denyFriendRequest.mutate(friendRequestId)}
-                />
-              </div>
-            ) : (
-              <div className="flex">
-                <X
-                  className="size-9 p-2 rounded-full hover:bg-gray-700"
-                  onClick={() => denyFriendRequest.mutate(friendRequestId)}
-                />
-              </div>
-            )}
+              )}
+              <X
+                className="size-9 p-2 rounded-full hover:bg-gray-700"
+                onClick={() => denyFriendRequest.mutate({ friendRequestId, type })}
+              />
+            </div>
           </motion.li>
         );
       })}
