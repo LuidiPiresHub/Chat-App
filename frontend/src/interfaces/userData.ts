@@ -1,10 +1,29 @@
+interface IRequest {
+  id: string;
+  senderId: string;
+  receiverId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface ISent extends IRequest {
+  receiver: IUserData;
+}
+
+interface IReceived extends IRequest {
+  sender: IUserData;
+}
+
 export interface IUserData {
   id: string;
   nickname: string;
   username: string;
   email: string;
-  createdAt: string;
-  updatedAt: string;
+  friends: IUserData[]
+  sentRequests: ISent[];
+  receivedRequests: IReceived[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IUserResponse {
@@ -17,9 +36,5 @@ export interface IPendingFriends {
   id: string;
   nickname: string;
   friendRequestId: string
-  createdAt: string;
-}
-
-export interface IPendingFriendsResponse {
-  message: IPendingFriends[] | null
+  createdAt: Date;
 }

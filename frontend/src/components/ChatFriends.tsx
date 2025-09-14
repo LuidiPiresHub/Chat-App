@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { UserCircle2, UserPlus2 } from 'lucide-react';
-import { IFriend } from '../interfaces/friend';
+import { IUserData } from '../interfaces/userData';
 import { motion } from 'framer-motion';
 import { createContainer, createItem } from '../utils/motionVariants';
 import OnlineFriendsTab from './tabs/OnlineFriendsTab';
@@ -9,10 +9,10 @@ import PendingFriendsTab from './tabs/PendingFriendsTab';
 import AddFriendTab from './tabs/AddFriendTab';
 
 interface IChatFriendsProps {
-  friends: IFriend[];
+  friends: IUserData[];
   setIsMenuOpen: Dispatch<SetStateAction<boolean>>;
   isMenuOpen: boolean;
-  setSelectedFriend: Dispatch<SetStateAction<IFriend | null>>;
+  setSelectedFriend: Dispatch<SetStateAction<IUserData | null>>;
 }
 
 type Tab = 'online' | 'all' | 'add' | 'pending';
@@ -27,7 +27,7 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSel
     { key: 'add', label: 'Adicionar Amigo', special: true }
   ];
 
-  const renderFriends = (friends: IFriend[]) => {
+  const renderFriends = (friends: IUserData[]) => {
     return (
       <ul className='flex flex-col overflow-y-scroll scrollbar -my-1 -mx-4 px-4'>
         {friends.map((friend) => (
@@ -38,7 +38,7 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSel
             className='flex items-center gap-2 border-t border-gray-700 p-4 select-none hover:bg-gray-800 cursor-pointer'
           >
             <UserCircle2 className='size-8' />
-            <span className='flex-1 truncate'>{friend.name}</span>
+            <span className='flex-1 truncate'>{friend.nickname}</span>
           </motion.li>
         ))}
       </ul>

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { IFriend } from '../../interfaces/friend';
+import { IUserData } from '../../interfaces/userData';
 import SearchBar from '../SearchBar';
 
 interface IOnlineFriendsTabProps {
-  renderFriends: (friends: IFriend[]) => JSX.Element;
-  friends: IFriend[];
+  renderFriends: (friends: IUserData[]) => JSX.Element;
+  friends: IUserData[];
 }
 
 export default function OnlineFriendsTab({ renderFriends, friends }: IOnlineFriendsTabProps) {
@@ -13,7 +13,7 @@ export default function OnlineFriendsTab({ renderFriends, friends }: IOnlineFrie
     <>
       <h1 className='text-2xl font-bold'>Online - 5</h1>
       <SearchBar id='online' placeholder='Pesquise um amigo...' setSearch={setSearch} />
-      {renderFriends(friends.slice(0, 5).filter((friend) => friend.name.toLowerCase().includes(search.toLowerCase())))}
+      {renderFriends(friends.slice(0, 5).filter((friend) => friend.nickname.toLowerCase().includes(search.toLowerCase())))}
     </>
   );
 }

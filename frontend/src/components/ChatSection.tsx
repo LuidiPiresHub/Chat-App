@@ -1,12 +1,11 @@
 import { ArrowLeft, Send, UserCircle2 } from 'lucide-react';
 import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
 import { IUserData } from '../interfaces/userData';
-import { IFriend } from '../interfaces/friend';
 import { useForm } from 'react-hook-form';
 
 interface IChatSectionProps {
   setIsMenuOpen: Dispatch<SetStateAction<boolean>>;
-  selectedFriend: IFriend;
+  selectedFriend: IUserData;
   user: IUserData;
 }
 
@@ -20,18 +19,18 @@ export default function ChatSection({ setIsMenuOpen, selectedFriend, user }: ICh
   const messageInitialState = useMemo(() => {
     const now = getHours();
     return [
-      { id: 1, senderId: selectedFriend.id, sender: `${selectedFriend.name}`, text: `Hello! I am ${selectedFriend.name} How are you?`, time: now },
+      { id: 1, senderId: selectedFriend.id, sender: `${selectedFriend.nickname}`, text: `Hello! I am ${selectedFriend.nickname} How are you?`, time: now },
       { id: 2, senderId: user.id, sender: `${user.nickname}`, text: `Hello, I'm ${user.nickname}, I'm fine, thank you.`, time: now },
-      { id: 3, senderId: selectedFriend.id, sender: `${selectedFriend.name}`, text: 'What about you?', time: now },
+      { id: 3, senderId: selectedFriend.id, sender: `${selectedFriend.nickname}`, text: 'What about you?', time: now },
       { id: 4, senderId: user.id, sender: `${user.nickname}`, text: 'I am doing well!', time: now },
-      { id: 5, senderId: selectedFriend.id, sender: `${selectedFriend.name}`, text: 'Great to hear!', time: now },
+      { id: 5, senderId: selectedFriend.id, sender: `${selectedFriend.nickname}`, text: 'Great to hear!', time: now },
       { id: 6, senderId: user.id, sender: `${user.nickname}`, text: 'What are you up to?', time: now },
-      { id: 7, senderId: selectedFriend.id, sender: `${selectedFriend.name}`, text: 'Just working on some projects.', time: now },
+      { id: 7, senderId: selectedFriend.id, sender: `${selectedFriend.nickname}`, text: 'Just working on some projects.', time: now },
       { id: 8, senderId: user.id, sender: `${user.nickname}`, text: 'Sounds interesting!', time: now },
-      { id: 9, senderId: selectedFriend.id, sender: `${selectedFriend.name}`, text: 'Yeah, I am learning a lot.', time: now },
+      { id: 9, senderId: selectedFriend.id, sender: `${selectedFriend.nickname}`, text: 'Yeah, I am learning a lot.', time: now },
       { id: 10, senderId: user.id, sender: `${user.nickname}`, text: 'That is awesome!', time: now },
-      { id: 11, senderId: selectedFriend.id, sender: `${selectedFriend.name}`, text: `Now I have to go, goodbye ${user.nickname}`, time: now },
-      { id: 12, senderId: user.id, sender: `${user.nickname}`, text: `see you later ${selectedFriend.name}`, time: now },
+      { id: 11, senderId: selectedFriend.id, sender: `${selectedFriend.nickname}`, text: `Now I have to go, goodbye ${user.nickname}`, time: now },
+      { id: 12, senderId: user.id, sender: `${user.nickname}`, text: `see you later ${selectedFriend.nickname}`, time: now },
     ];
   }, [user, selectedFriend]);
 
@@ -75,7 +74,7 @@ export default function ChatSection({ setIsMenuOpen, selectedFriend, user }: ICh
       <header className='flex items-center gap-2 p-4 border-b border-gray-800'>
         <ArrowLeft className='size-6 md:hidden cursor-pointer' onClick={() => setIsMenuOpen((prevState) => !prevState)} />
         <UserCircle2 className='size-12' />
-        <h2 className='text-2xl font-bold'>{selectedFriend.name}</h2>
+        <h2 className='text-2xl font-bold'>{selectedFriend.nickname}</h2>
       </header>
       <section className="flex flex-1 flex-col gap-4 p-4 overflow-y-scroll scrollbar">
         {messages.map((message) => {

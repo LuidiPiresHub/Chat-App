@@ -2,16 +2,15 @@ import { UserPlus2, Settings, UserCircle2 } from 'lucide-react';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IUserData } from '../interfaces/userData';
-import { IFriend } from '../interfaces/friend';
 import SearchBar from './SearchBar';
 
 interface IChatSidebarProps {
   isMenuOpen: boolean;
   setIsMenuOpen: Dispatch<SetStateAction<boolean>>;
   user: IUserData;
-  setSelectedFriend: Dispatch<SetStateAction<IFriend | null>>;
-  selectedFriend: IFriend | null;
-  friends: IFriend[];
+  setSelectedFriend: Dispatch<SetStateAction<IUserData | null>>;
+  selectedFriend: IUserData | null;
+  friends: IUserData[];
 }
 
 export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelectedFriend, selectedFriend, friends }: IChatSidebarProps) {
@@ -70,7 +69,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
     }
   }, [selectedFriend]);
 
-  const handleFriendClick = (friend: IFriend) => {
+  const handleFriendClick = (friend: IUserData) => {
     if (friend.id === selectedFriend?.id) return;
     setSelectedFriend(friend);
     setIsMenuOpen(false);
@@ -81,7 +80,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
     setIsMenuOpen(false);
   };
 
-  const filteredFriends = friends.filter((friend) => friend.name.toLowerCase().includes(search.toLowerCase()));
+  const filteredFriends = friends.filter((friend) => friend.nickname.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <aside ref={asideRef} className={`bg-[#141428] h-dvh absolute z-1 ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition md:static md:translate-x-0 w-full max-w-70 flex flex-col gap-4 border-r border-gray-800 p-4 select-none`}>
@@ -105,7 +104,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
             onClick={() => handleFriendClick(friend)}
           >
             <UserCircle2 className='size-8' />
-            <span className='flex-1 truncate'>{friend.name}</span>
+            <span className='flex-1 truncate'>{friend.nickname}</span>
           </li>
         ))}
       </ul>

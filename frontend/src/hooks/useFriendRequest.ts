@@ -1,8 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import { api } from '../config/axios';
 import { UseFormReset } from 'react-hook-form';
-import { IPendingFriends, IPendingFriendsResponse, IUsername } from '../interfaces/userData';
+import { IPendingFriends, IUsername } from '../interfaces/userData';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import useAuth from './useAuth';
@@ -46,17 +46,6 @@ export const useFriendRequest = () => {
     }
   });
 
-  const getPendingRequests = useQuery({
-    queryKey: ['pendingFriend', user.id],
-    retry: false,
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5,
-    queryFn: async () => {
-      const { data } = await api.get<IPendingFriendsResponse>('/user/friends-requests');
-      return data.message;
-    }
-  });
-
   interface IAcceptFriendRequest {
     friendId: string
     friendRequestId: string
@@ -90,7 +79,7 @@ export const useFriendRequest = () => {
   const denyFriendRequest = useMutation({
     mutationKey: ['acceptFriendRequest'],
     onMutate: async (friendRequestId) => {
-      const previousData = queryClient.getQueryData<IPendingFriends[]>(['pendingFriend',user!.id]);
+      const previousData = queryClient.getQueryData<IPendingFriends[]>(['pendingFriend',user.id]);
       queryClient.setQueryData<IPendingFriends[]>(['pendingFriend', user.id], (old) => {
         return old?.filter((req) => req.friendRequestId !== friendRequestId) ?? [];
       });
@@ -112,5 +101,5 @@ export const useFriendRequest = () => {
     }
   });
 
-  return { sendFriendRequest, getPendingRequests, acceptFriendRequest, denyFriendRequest };
+  return { sendFriendRequest, acceptFriendRequest, denyFriendRequest };
 };
