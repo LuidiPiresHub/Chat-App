@@ -35,7 +35,7 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSel
             key={friend.id}
             variants={createItem(20)}
             onClick={() => setSelectedFriend(friend)}
-            className='flex items-center gap-2 border-t border-gray-700 p-4 select-none hover:bg-gray-800 cursor-pointer'
+            className='flex items-center gap-2 border-t border-gray-700 p-4 -mr-1 select-none hover:bg-gray-800 cursor-pointer'
           >
             <UserCircle2 className='size-8' />
             <span className='flex-1 truncate'>{friend.nickname}</span>

@@ -6,11 +6,11 @@ interface IRequest {
   updatedAt: Date;
 }
 
-interface ISent extends IRequest {
+export interface ISent extends IRequest {
   receiver: IUserData;
 }
 
-interface IReceived extends IRequest {
+export interface IReceived extends IRequest {
   sender: IUserData;
 }
 
