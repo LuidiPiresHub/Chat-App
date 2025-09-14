@@ -15,6 +15,12 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  sentRequests    FriendRequest[] @relation("sentRequests")
+  receivedRequests FriendRequest[] @relation("receivedRequests")
+
+  friendshipsA Friendship[] @relation("friendshipsA")
+  friendshipsB Friendship[] @relation("friendshipsB")
 }
 
 model FriendRequest {
@@ -23,6 +29,9 @@ model FriendRequest {
   receiverId String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+
+  sender     User     @relation("sentRequests", fields: [senderId], references: [id])
+  receiver    User     @relation("receivedRequests", fields: [receiverId], references: [id])
 
   @@unique([senderId, receiverId])
 }
@@ -33,6 +42,9 @@ model Friendship {
   userBId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  userA     User     @relation("friendshipsA", fields: [userAId], references: [id])
+  userB     User     @relation("friendshipsB", fields: [userBId], references: [id])
 
   @@unique([userAId, userBId])
 }

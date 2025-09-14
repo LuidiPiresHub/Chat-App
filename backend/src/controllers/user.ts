@@ -17,12 +17,6 @@ const sendFriendRequest = async (req: Request, res: Response): Promise<void> => 
   res.status(mapStatus(type)).json({ message });
 };
 
-const getFriendsRequests = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.user as User;
-  const { type, message } = await userService.getFriendsRequests(id);
-  res.status(mapStatus(type)).json({ message });
-};
-
 const denyFriendRequest = async (req: Request, res: Response): Promise<void> => {
   const { friendRequestId } = req.params;
   const { type, message } = await userService.denyFriendRequest(friendRequestId);
@@ -40,7 +34,6 @@ const acceptFriendRequest = async (req: Request, res: Response): Promise<void> =
 export default {
   updateNickname,
   sendFriendRequest,
-  getFriendsRequests,
   denyFriendRequest,
   acceptFriendRequest
 };
