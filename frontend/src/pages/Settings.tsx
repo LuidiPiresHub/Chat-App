@@ -1,6 +1,6 @@
 import useLogout from '../hooks/useLogout';
 import useAuth from '../hooks/useAuth';
-import { MoveLeft } from 'lucide-react';
+import { Loader, MoveLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -19,7 +19,7 @@ interface IUpdateNickname {
 export default function Settings() {
   const auth = useAuth();
   const user = auth.user!;
-  const { mutate: logout } = useLogout();
+  const { mutate: logout, isPending } = useLogout();
   const navigate = useNavigate();
   const { register, handleSubmit, reset, formState: { errors } } = useForm<IUpdateNickname>({ resolver: zodResolver(userNicknameSchema) });
   const queryClient = useQueryClient();
@@ -92,10 +92,11 @@ export default function Settings() {
         {errors.nickname && <span className='text-red-600 text-center'>{errors.nickname.message}</span>}
         <button
           type='button'
-          className="w-full bg-red-600 hover:bg-red-700 px-4 py-2 rounded cursor-pointer"
+          className="w-full bg-red-600 hover:bg-red-700 px-4 py-2 rounded cursor-pointer flex justify-center items-center"
           onClick={() => logout()}
+          disabled={isPending}
         >
-          Logout
+          {isPending ? <Loader className='animate-spin h-6 w-6' /> : 'Logout'}
         </button>
       </section>
     </motion.main>
