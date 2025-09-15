@@ -23,6 +23,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
   const startY = useRef(0);
   const draggingFromEdge = useRef(false);
   const isDraggingHorizontally = useRef(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
       startY.current = e.touches[0].clientY;
       isDraggingHorizontally.current = false;
 
-      if (!isMenuOpen && startX.current < 30) {
+      if (!isMenuOpen && startX.current < 50) {
         draggingFromEdge.current = true;
       } else if (isMenuOpen) {
         draggingFromEdge.current = true;
@@ -42,6 +43,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
 
     const handleTouchMove = (e: TouchEvent) => {
       if (!draggingFromEdge.current) return;
+      e.preventDefault();
 
       const diffX = e.touches[0].clientX - startX.current;
       const diffY = e.touches[0].clientY - startY.current;
@@ -84,7 +86,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
     };
 
     document.addEventListener('touchstart', handleTouchStart);
-    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
     document.addEventListener('touchend', handleTouchEnd);
 
     return () => {
@@ -121,6 +123,12 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
     else setTranslateX(-100);
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleFriendClick = (friend: IUserData) => {
     if (friend.id === selectedFriend?.id) return;
     setSelectedFriend(friend);
@@ -140,8 +148,8 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
     <aside
       ref={asideRef}
       style={{
-        transform: `translateX(${translateX}%)`,
-        transition: withTransition ? 'transform 0.3s ease' : 'none',
+        transform: isMobile ? `translateX(${translateX}%)` : undefined,
+        transition: isMobile ? (withTransition ? 'transform 0.3s ease' : 'none') : undefined,
       }}
       className="bg-[#141428] h-dvh absolute z-1 md:static w-full max-w-70 flex flex-col gap-4 border-r border-gray-800 p-4 select-none"
     >
