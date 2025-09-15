@@ -20,7 +20,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
   const navigate = useNavigate();
 
   useEffect(() => {
-    const percentage = 40;
+    const percentage = 35;
     let touchStartX = 0;
     let touchEndX = 0;
 
