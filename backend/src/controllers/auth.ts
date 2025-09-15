@@ -1,15 +1,7 @@
-import { CookieOptions, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import authService from '../services/auth';
 import { mapStatus } from '../utils/mapStatus';
-
-const isProd = process.env.NODE_ENV === 'production';
-
-const cookieOptions: CookieOptions = {
-  httpOnly: true,
-  secure: isProd,
-  sameSite: isProd ? 'none' : 'lax',
-  maxAge: 24 * 60 * 60 * 1000,
-};
+import { cookieOptions } from '../config/token';
 
 const signUp = async (req: Request, res: Response): Promise<void> => {
   const { username, email, password } = req.body;
