@@ -16,29 +16,33 @@ interface IChatSidebarProps {
 export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelectedFriend, selectedFriend, friends }: IChatSidebarProps) {
   const asideRef = useRef<HTMLDivElement | null>(null);
   const currentFriendRef = useRef<HTMLLIElement | null>(null);
-  const [search, setSearch] = useState<string>('');
-  const [translateX, setTranslateX] = useState(-100);
-  const [withTransition, setWithTransition] = useState(false);
   const startX = useRef(0);
   const startY = useRef(0);
   const draggingFromEdge = useRef(false);
   const isDraggingHorizontally = useRef(false);
+
+  const [search, setSearch] = useState<string>('');
+  const [translateX, setTranslateX] = useState(-100);
+  const [withTransition, setWithTransition] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  const EDGE_SWIPE_THRESHOLD = 50;
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleTouchStart = (e: TouchEvent) => {
       startX.current = e.touches[0].clientX;
       startY.current = e.touches[0].clientY;
-      isDraggingHorizontally.current = false;
-
-      if (!isMenuOpen && startX.current < 50) {
+      if (!isMenuOpen && startX.current < EDGE_SWIPE_THRESHOLD) {
         draggingFromEdge.current = true;
-      } else if (isMenuOpen) {
+      } else if (isMenuOpen && asideRef.current?.contains(e.target as Node)) {
         draggingFromEdge.current = true;
       } else {
         draggingFromEdge.current = false;
       }
+
+      isDraggingHorizontally.current = false;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
