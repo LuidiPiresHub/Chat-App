@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { MoveLeft } from 'lucide-react';
-import astronaut from '../assets/astronaut.png';
+import astronaut from '@assets/astronaut.png';
 
 interface IStar {
   x: number;

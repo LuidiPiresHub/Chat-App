@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { IUserData } from '../../interfaces/userData';
-import SearchBar from '../SearchBar';
+import { IUserData } from '@interfaces/userData';
+import SearchBar from '@components/SearchBar';
 
 interface IAllFriendsTabProps {
   renderFriends: (friends: IUserData[]) => JSX.Element;

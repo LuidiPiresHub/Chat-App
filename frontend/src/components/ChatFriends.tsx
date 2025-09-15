@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { UserCircle2, UserPlus2 } from 'lucide-react';
-import { IUserData } from '../interfaces/userData';
+import { IUserData } from '@interfaces/userData';
 import { motion } from 'framer-motion';
-import { createContainer, createItem } from '../utils/motionVariants';
-import OnlineFriendsTab from './tabs/OnlineFriendsTab';
-import AllFriendsTab from './tabs/AllFriendsTab';
-import PendingFriendsTab from './tabs/PendingFriendsTab';
-import AddFriendTab from './tabs/AddFriendTab';
+import { createContainer, createItem } from '@utils/motionVariants';
+import OnlineFriendsTab from '@components/tabs/OnlineFriendsTab';
+import AllFriendsTab from '@components/tabs/AllFriendsTab';
+import PendingFriendsTab from '@components/tabs/PendingFriendsTab';
+import AddFriendTab from '@components/tabs/AddFriendTab';
 
 interface IChatFriendsProps {
   friends: IUserData[];

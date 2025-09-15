@@ -1,7 +1,7 @@
-import { useFriendRequest } from '../hooks/useFriendRequest';
-import { IReceived, ISent } from '../interfaces/userData';
+import { useFriendRequest } from '@hooks/useFriendRequest';
+import { IReceived, ISent } from '@interfaces/userData';
 import { motion } from 'framer-motion';
-import { createItem } from '../utils/motionVariants';
+import { createItem } from '@utils/motionVariants';
 import { CheckIcon, UserCircle2, X } from 'lucide-react';
 
 interface RenderListProps {

@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import useAuth from '../hooks/useAuth';
-import ChatSection from '../components/ChatSection';
-import ChatSidebar from '../components/ChatSidebar';
-import { IUserData } from '../interfaces/userData';
-import ChatFriends from '../components/ChatFriends';
+import useAuth from '@hooks/useAuth';
+import ChatSection from '@components/ChatSection';
+import ChatSidebar from '@components/ChatSidebar';
+import { IUserData } from '@interfaces/userData';
+import ChatFriends from '@components/ChatFriends';
 import { motion } from 'framer-motion';
 
 export default function Chat() {

@@ -1,8 +1,8 @@
 import { ReactNode, useState } from 'react';
 import { AuthContext } from './AuthContext';
 import { useQuery } from '@tanstack/react-query';
-import { api } from '../../config/axios';
-import { IUserResponse } from '../../interfaces/userData';
+import { api } from '@config/axios';
+import { IUserResponse } from '@interfaces/userData';
 
 interface IAuthProviderProps {
   children: ReactNode;

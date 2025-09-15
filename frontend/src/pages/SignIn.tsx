@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ISignInForm, signInSchema } from '../schemas/signIn';
-import { useAuthMutation } from '../hooks/useAuthMutation';
+import { ISignInForm, signInSchema } from '@schemas/signIn';
+import { useAuthMutation } from '@hooks/useAuthMutation';
 import { motion } from 'framer-motion';
-import { createContainer, createItem } from '../utils/motionVariants';
-import FormError from '../components/FormError';
+import { createContainer, createItem } from '@utils/motionVariants';
+import FormError from '@components/FormError';
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);

@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form';
-import { IUsername } from '../../interfaces/userData';
+import { IUsername } from '@interfaces/userData';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { usernameSchema } from '../../schemas/username';
-import { useFriendRequest } from '../../hooks/useFriendRequest';
+import { usernameSchema } from '@schemas/username';
+import { useFriendRequest } from '@hooks/useFriendRequest';
 import { Search } from 'lucide-react';
-import FormError from '../FormError';
+import FormError from '@components/FormError';
 
 export default function AddFriendTab() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<IUsername>({ resolver: zodResolver(usernameSchema) });

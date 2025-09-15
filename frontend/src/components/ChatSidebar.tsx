@@ -1,8 +1,8 @@
 import { UserPlus2, Settings, UserCircle2 } from 'lucide-react';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IUserData } from '../interfaces/userData';
-import SearchBar from './SearchBar';
+import { IUserData } from '@interfaces/userData';
+import SearchBar from '@components/SearchBar';
 
 interface IChatSidebarProps {
   isMenuOpen: boolean;

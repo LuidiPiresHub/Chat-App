@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../config/axios';
+import { api } from '@config/axios';
 import { AxiosError } from 'axios';
 import Swal from 'sweetalert2';
 import useAuth from './useAuth';
-import { IUserResponse } from '../interfaces/userData';
+import { IUserResponse } from '@interfaces/userData';
 
 interface IUseAuthMutationProps {
   url: string;

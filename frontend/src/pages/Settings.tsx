@@ -1,15 +1,15 @@
-import useLogout from '../hooks/useLogout';
-import useAuth from '../hooks/useAuth';
+import useLogout from '@hooks/useLogout';
+import useAuth from '@hooks/useAuth';
 import { Loader, MoveLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../config/axios';
+import { api } from '@config/axios';
 import { toast } from 'react-toastify';
-import { IUserResponse } from '../interfaces/userData';
+import { IUserResponse } from '@interfaces/userData';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { userNicknameSchema } from '../schemas/nickname';
+import { userNicknameSchema } from '@schemas/nickname';
 import { AxiosError } from 'axios';
 
 interface IUpdateNickname {

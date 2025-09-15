@@ -1,6 +1,6 @@
 import { ArrowLeft, Send, UserCircle2 } from 'lucide-react';
 import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
-import { IUserData } from '../interfaces/userData';
+import { IUserData } from '@interfaces/userData';
 import { useForm } from 'react-hook-form';
 
 interface IChatSectionProps {

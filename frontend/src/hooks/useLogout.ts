@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import useAuth from './useAuth';
-import { api } from '../config/axios';
+import { api } from '@config/axios';
 
 export default function useLogout() {
   const { setIsAuthenticated } = useAuth();

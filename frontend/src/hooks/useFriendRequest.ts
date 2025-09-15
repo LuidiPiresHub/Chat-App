@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
-import { api } from '../config/axios';
+import { api } from '@config/axios';
 import { UseFormReset } from 'react-hook-form';
-import { IUserData, IUsername } from '../interfaces/userData';
+import { IUserData, IUsername } from '@interfaces/userData';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 

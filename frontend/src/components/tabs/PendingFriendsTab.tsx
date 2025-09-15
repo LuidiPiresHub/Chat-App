@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import useAuth from '../../hooks/useAuth';
-import PendingList from '../PendingList';
+import useAuth from '@hooks/useAuth';
+import PendingList from '@components/PendingList';
 
 export default function PendingFriendsTab() {
   const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received');

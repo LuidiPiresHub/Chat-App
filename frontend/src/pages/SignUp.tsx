@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ISignUpForm, signUpSchema } from '../schemas/signUp';
-import { useAuthMutation } from '../hooks/useAuthMutation';
+import { ISignUpForm, signUpSchema } from '@schemas/signUp';
+import { useAuthMutation } from '@hooks/useAuthMutation';
 import { motion } from 'framer-motion';
-import { createContainer, createItem } from '../utils/motionVariants';
-import FormError from '../components/FormError';
+import { createContainer, createItem } from '@utils/motionVariants';
+import FormError from '@components/FormError';
 
 interface IShowPassord {
   password: boolean;
