@@ -53,7 +53,7 @@ export default function ChatFriends({ friends, setIsMenuOpen, isMenuOpen, setSel
 
   return (
     <section className='flex flex-col flex-1 overflow-x-hidden'>
-      <header data-ignore-touch className='flex items-center gap-4 border-b border-b-gray-800 py-3 px-4 text-gray-300 overflow-x-scroll scrollbar-thin'>
+      <header className='flex items-center gap-4 border-b border-b-gray-800 py-3 px-4 text-gray-300 overflow-x-scroll scrollbar-thin'>
         <div className='flex items-center gap-2 min-w-max' onClick={handleMenuOpen}>
           <UserPlus2 className='size-6 text-gray-400' />
           <span>Amigos</span>

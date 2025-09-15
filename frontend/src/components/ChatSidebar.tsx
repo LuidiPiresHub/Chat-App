@@ -17,35 +17,82 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
   const asideRef = useRef<HTMLDivElement | null>(null);
   const currentFriendRef = useRef<HTMLLIElement | null>(null);
   const [search, setSearch] = useState<string>('');
+  const [translateX, setTranslateX] = useState(-100);
+  const [withTransition, setWithTransition] = useState(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const draggingFromEdge = useRef(false);
+  const isDraggingHorizontally = useRef(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const percentage = 35;
-    let touchStartX = 0;
-    let touchEndX = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      startX.current = e.touches[0].clientX;
+      startY.current = e.touches[0].clientY;
+      isDraggingHorizontally.current = false;
 
-    const handleTouchStart = (event: TouchEvent) => {
-      if ((event.target as HTMLElement).closest('[data-ignore-touch]')) return;
-      touchStartX = event.changedTouches[0].clientX;
+      if (!isMenuOpen && startX.current < 30) {
+        draggingFromEdge.current = true;
+      } else if (isMenuOpen) {
+        draggingFromEdge.current = true;
+      } else {
+        draggingFromEdge.current = false;
+      }
     };
 
-    const handleTouchEnd = (event: TouchEvent) => {
-      if ((event.target as HTMLElement).closest('[data-ignore-touch]')) return;
-      touchEndX = event.changedTouches[0].clientX;
-      const diff = touchEndX - touchStartX;
-      const threshold = Math.floor(window.innerWidth * (percentage / 100));
-      if (diff > threshold) setIsMenuOpen(true);
-      if (diff < -threshold) setIsMenuOpen(false);
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!draggingFromEdge.current) return;
+
+      const diffX = e.touches[0].clientX - startX.current;
+      const diffY = e.touches[0].clientY - startY.current;
+
+      if (!isDraggingHorizontally.current) {
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          isDraggingHorizontally.current = true;
+        } else {
+          draggingFromEdge.current = false;
+          return;
+        }
+      }
+
+      setWithTransition(false);
+
+      if (!isMenuOpen && diffX > 0) {
+        setTranslateX(Math.min(0, -100 + (diffX / window.innerWidth) * 100));
+      } else if (isMenuOpen && diffX < 0) {
+        setTranslateX(Math.max(-100, (diffX / window.innerWidth) * 100));
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (!draggingFromEdge.current) return;
+
+      setWithTransition(true);
+
+      if (!isMenuOpen && translateX > -65) {
+        setTranslateX(0);
+        setIsMenuOpen(true);
+      } else if (isMenuOpen && translateX < -35) {
+        setTranslateX(-100);
+        setIsMenuOpen(false);
+      } else {
+        setTranslateX(isMenuOpen ? 0 : -100);
+      }
+
+      draggingFromEdge.current = false;
+      isDraggingHorizontally.current = false;
     };
 
     document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchmove', handleTouchMove);
     document.addEventListener('touchend', handleTouchEnd);
 
     return () => {
       document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchmove', handleTouchMove);
       document.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [setIsMenuOpen]);
+  }, [translateX, setIsMenuOpen, isMenuOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event: TouchEvent) => {
@@ -69,6 +116,11 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
     }
   }, [selectedFriend]);
 
+  useEffect(() => {
+    if (isMenuOpen) setTranslateX(0);
+    else setTranslateX(-100);
+  }, [isMenuOpen]);
+
   const handleFriendClick = (friend: IUserData) => {
     if (friend.id === selectedFriend?.id) return;
     setSelectedFriend(friend);
@@ -80,22 +132,33 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
     setIsMenuOpen(false);
   };
 
-  const filteredFriends = friends.filter((friend) => friend.nickname.toLowerCase().includes(search.toLowerCase()));
+  const filteredFriends = friends.filter((friend) =>
+    friend.nickname.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <aside ref={asideRef} className={`bg-[#141428] h-dvh absolute z-1 ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition md:static md:translate-x-0 w-full max-w-70 flex flex-col gap-4 border-r border-gray-800 p-4 select-none`}>
-      <h1 className='text-4xl font-bold'>Chat App</h1>
+    <aside
+      ref={asideRef}
+      style={{
+        transform: `translateX(${translateX}%)`,
+        transition: withTransition ? 'transform 0.3s ease' : 'none',
+      }}
+      className="bg-[#141428] h-dvh absolute z-1 md:static w-full max-w-70 flex flex-col gap-4 border-r border-gray-800 p-4 select-none"
+    >
+      <h1 className="text-4xl font-bold">Chat App</h1>
       <button
-        type='button'
+        type="button"
         onClick={handleAddFriend}
-        className='bg-gray-700 rounded-lg py-2 px-3 gap-3 flex items-center cursor-pointer'
+        className="bg-gray-700 rounded-lg py-2 px-3 gap-3 flex items-center cursor-pointer"
       >
-        <UserPlus2 className='size-5' />
+        <UserPlus2 className="size-5" />
         Amigos
       </button>
-      <SearchBar id='sidebar' placeholder='Pesquise um amigo...' setSearch={setSearch} />
-      <p className='text-gray-400 px-5 border-t border-t-gray-800 pt-2 -mx-4'>Mensanges diretas</p>
-      <ul className='flex flex-1 flex-col -mx-4 px-4 gap-1 overflow-y-scroll overflow-x-hidden scrollbar-thin'>
+      <SearchBar id="sidebar" placeholder="Pesquise um amigo..." setSearch={setSearch} />
+      <p className="text-gray-400 px-5 border-t border-t-gray-800 pt-2 -mx-4">
+        Mensagens diretas
+      </p>
+      <ul className="flex flex-1 flex-col -mx-4 px-4 gap-1 overflow-y-auto overflow-x-hidden scrollbar-thin">
         {filteredFriends.map((friend) => (
           <li
             key={friend.id}
@@ -103,17 +166,17 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
             className={`w-[calc(100%+3px)] flex items-center gap-2 cursor-pointer rounded-lg p-2 ${friend.id === selectedFriend?.id ? 'bg-gray-700' : 'bg-transparent'} hover:bg-gray-800`}
             onClick={() => handleFriendClick(friend)}
           >
-            <UserCircle2 className='size-8' />
-            <span className='flex-1 truncate'>{friend.nickname}</span>
+            <UserCircle2 className="size-8" />
+            <span className="flex-1 truncate">{friend.nickname}</span>
           </li>
         ))}
       </ul>
-      <section className='flex items-center justify-between gap-2 bg-gray-700 rounded-lg p-2'>
-        <div className='flex items-center gap-2 truncate flex-1'>
-          <UserCircle2 className='size-8' />
-          <span className='truncate flex-1'>{user.nickname}</span>
+      <section className="flex items-center justify-between gap-2 bg-gray-700 rounded-lg p-2">
+        <div className="flex items-center gap-2 truncate flex-1">
+          <UserCircle2 className="size-8" />
+          <span className="truncate flex-1">{user.nickname}</span>
         </div>
-        <Settings className='size-5 cursor-pointer' onClick={() => navigate('/settings')} />
+        <Settings className="size-5 cursor-pointer" onClick={() => navigate('/settings')} />
       </section>
     </aside>
   );
