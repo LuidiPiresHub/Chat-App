@@ -31,6 +31,7 @@ export default function Chat() {
       {selectedFriend ? (
         <ChatSection
           setIsMenuOpen={setIsMenuOpen}
+          isMenuOpen={isMenuOpen}
           selectedFriend={selectedFriend}
           user={user}
         />

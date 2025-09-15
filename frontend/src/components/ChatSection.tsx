@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 
 interface IChatSectionProps {
   setIsMenuOpen: Dispatch<SetStateAction<boolean>>;
+  isMenuOpen: boolean;
   selectedFriend: IUserData;
   user: IUserData;
 }
@@ -15,7 +16,7 @@ interface IFormData {
 
 const getHours = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-export default function ChatSection({ setIsMenuOpen, selectedFriend, user }: IChatSectionProps) {
+export default function ChatSection({ setIsMenuOpen, isMenuOpen, selectedFriend, user }: IChatSectionProps) {
   const messageInitialState = useMemo(() => {
     const now = getHours();
     return [
@@ -52,6 +53,11 @@ export default function ChatSection({ setIsMenuOpen, selectedFriend, user }: ICh
     setFocus('message');
   }, [selectedFriend, messageInitialState, setFocus]);
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      (document.activeElement as HTMLElement)?.blur();
+    }
+  }, [isMenuOpen]);
 
   const sendMessage = (formData: IFormData) => {
     const message = formData.message.trim();
