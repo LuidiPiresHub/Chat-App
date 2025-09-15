@@ -1,10 +1,10 @@
-import { prisma } from '../config/prisma';
-import { IService } from '../interfaces/service';
-import { ISafeUserData, ISignIn, ISignUp } from '../interfaces/auth';
+import { prisma } from '@config/prisma';
+import { IService } from '@interfaces/service';
+import { ISafeUserData, ISignIn, ISignUp } from '@interfaces/auth';
 import bcrypt from 'bcrypt';
-import { generateToken } from '../auth/jwtFunctions';
+import { generateToken } from '@auth/jwtFunctions';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { toSafeUser, userInclude } from '../utils/toSafeUser';
+import { toSafeUser, userInclude } from '@utils/toSafeUser';
 
 const signUp = async ({ username, email, password }: ISignUp): Promise<IService<ISafeUserData | string>> => {
   try {

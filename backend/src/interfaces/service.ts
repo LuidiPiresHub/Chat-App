@@ -1,4 +1,4 @@
-import { HttpStatus } from '../utils/mapStatus';
+import { HttpStatus } from '@utils/mapStatus';
 
 export interface IService<T> {
   type: keyof typeof HttpStatus;

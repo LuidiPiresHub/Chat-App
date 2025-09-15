@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import authService from '../services/auth';
-import { mapStatus } from '../utils/mapStatus';
-import { cookieOptions } from '../config/token';
+import authService from '@services/auth';
+import { mapStatus } from '@utils/mapStatus';
+import { cookieOptions } from '@config/token';
 
 const signUp = async (req: Request, res: Response): Promise<void> => {
   const { username, email, password } = req.body;

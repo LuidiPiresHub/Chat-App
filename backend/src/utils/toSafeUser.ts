@@ -1,5 +1,5 @@
 import { FriendRequest, Friendship, Prisma, User } from '@prisma/client';
-import { ISafeUserData } from '../interfaces/auth';
+import { ISafeUserData } from '@interfaces/auth';
 
 export const userInclude = {
   friendshipsA: { include: { userB: true } },

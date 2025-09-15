@@ -1,9 +1,9 @@
 import { User } from '@prisma/client';
-import { prisma } from '../config/prisma';
-import { IService } from '../interfaces/service';
+import { prisma } from '@config/prisma';
+import { IService } from '@interfaces/service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { ISafeUserData } from '../interfaces/auth';
-import { toSafeUser, userInclude } from '../utils/toSafeUser';
+import { ISafeUserData } from '@interfaces/auth';
+import { toSafeUser, userInclude } from '@utils/toSafeUser';
 
 const getUserById = async (userId: string): Promise<IService<ISafeUserData | string>> => {
   const user = await prisma.user.findUnique({

@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { generateToken, verifyToken } from '../auth/jwtFunctions';
-import userService from '../services/user';
-import { mapStatus } from '../utils/mapStatus';
-import { cookieOptions } from '../config/token';
+import { generateToken, verifyToken } from '@auth/jwtFunctions';
+import userService from '@services/user';
+import { mapStatus } from '@utils/mapStatus';
+import { cookieOptions } from '@config/token';
 
 export const validateToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const token = req.cookies.token;

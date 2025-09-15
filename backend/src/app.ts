@@ -1,8 +1,8 @@
 import express, { json } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import routes from './routes';
-import { errorHandler } from './middlewares/errorHandler';
+import routes from '@routes/index';
+import { errorHandler } from '@middlewares/errorHandler';
 
 const app = express();
 app.use(json());

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import userService from '../services/user';
-import { mapStatus } from '../utils/mapStatus';
+import userService from '@services/user';
+import { mapStatus } from '@utils/mapStatus';
 import { User } from '@prisma/client';
 
 const updateNickname = async (req: Request, res: Response): Promise<void> => {
