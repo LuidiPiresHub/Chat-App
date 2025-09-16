@@ -12,6 +12,7 @@ app.use(cookieParser());
 app.use('/auth', routes.authRouter);
 app.use('/user', routes.userRouter);
 app.use('/user/friend-request', routes.friendRequestRouter);
+app.use('/user/friend', routes.friendRouter);
 app.use(errorHandler);
 
 export default app;

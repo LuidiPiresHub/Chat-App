@@ -1,12 +1,14 @@
-import { ArrowLeft, Send, UserCircle2 } from 'lucide-react';
+import { ArrowLeft, Send, UserCircle2, Video, Phone } from 'lucide-react';
 import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
 import { IUserData } from '@interfaces/userData';
 import { useForm } from 'react-hook-form';
+import FriendMenu from './FriendMenu';
 
 interface IChatSectionProps {
   setIsMenuOpen: Dispatch<SetStateAction<boolean>>;
   isMenuOpen: boolean;
   selectedFriend: IUserData;
+  setSelectedFriend: Dispatch<SetStateAction<IUserData | null>>;
   user: IUserData;
 }
 
@@ -16,7 +18,7 @@ interface IFormData {
 
 const getHours = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-export default function ChatSection({ setIsMenuOpen, isMenuOpen, selectedFriend, user }: IChatSectionProps) {
+export default function ChatSection({ setIsMenuOpen, isMenuOpen, selectedFriend, user, setSelectedFriend }: IChatSectionProps) {
   const messageInitialState = useMemo(() => {
     const now = getHours();
     return [
@@ -77,10 +79,21 @@ export default function ChatSection({ setIsMenuOpen, isMenuOpen, selectedFriend,
 
   return (
     <section className='w-full h-dvh flex flex-col'>
-      <header className='flex items-center gap-2 p-4 border-b border-gray-800'>
-        <ArrowLeft className='size-6 md:hidden cursor-pointer' onClick={() => setIsMenuOpen((prevState) => !prevState)} />
-        <UserCircle2 className='size-12' />
-        <h2 className='text-2xl font-bold'>{selectedFriend.nickname}</h2>
+      <header className="flex items-center justify-between gap-2 p-4 border-b border-gray-800">
+        <div className="flex items-center gap-2">
+          <ArrowLeft className="size-6 md:hidden cursor-pointer" onClick={() => setIsMenuOpen((prevState) => !prevState)} />
+          <UserCircle2 className="size-12" />
+          <h2 className="text-2xl font-bold">{selectedFriend.nickname}</h2>
+        </div>
+        <div className="flex gap-2">
+          <button type='button' className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-700 cursor-pointer">
+            <Video className="w-5 h-5" />
+          </button>
+          <button type='button' className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-700 cursor-pointer">
+            <Phone className="w-5 h-5" />
+          </button>
+          <FriendMenu selectedFriend={selectedFriend} setSelectedFriend={setSelectedFriend} />
+        </div>
       </header>
       <section className="flex flex-1 flex-col gap-4 p-4 overflow-y-scroll scrollbar">
         {messages.map((message) => {
