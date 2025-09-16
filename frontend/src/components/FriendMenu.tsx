@@ -143,7 +143,7 @@ export default function FriendMenu({ selectedFriend, setSelectedFriend }: IFried
                 type="button"
                 disabled={!isEnable}
                 onClick={() => onClick(selectedFriend)}
-                className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-700 ${isEnable ? 'text-white cursor-pointer' : 'text-gray-400 cursor-not-allowed'}`}
+                className={`w-full text-left p-4 text-sm hover:bg-gray-700 ${isEnable ? 'text-white cursor-pointer' : 'text-gray-400 cursor-not-allowed'}`}
               >
                 {title}
               </button>
