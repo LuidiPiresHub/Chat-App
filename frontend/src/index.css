@@ -67,3 +67,12 @@ input:-webkit-autofill {
 .scrollbar-thin::-webkit-scrollbar-track {
   background-color: rgb(20, 20, 40);
 }
+
+.fade-mask {
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+}

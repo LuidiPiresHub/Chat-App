@@ -20,23 +20,23 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
   const startY = useRef(0);
   const draggingFromEdge = useRef(false);
   const isDraggingHorizontally = useRef(false);
-
   const [search, setSearch] = useState<string>('');
   const [translateX, setTranslateX] = useState(-100);
   const [withTransition, setWithTransition] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  const EDGE_SWIPE_THRESHOLD = 50;
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleTouchStart = (e: TouchEvent) => {
-      startX.current = e.touches[0].clientX;
-      startY.current = e.touches[0].clientY;
-      if (!isMenuOpen && startX.current < EDGE_SWIPE_THRESHOLD) {
+    const handleTouchStart = (event: TouchEvent) => {
+      startX.current = event.touches[0].clientX;
+      startY.current = event.touches[0].clientY;
+
+      if ((event.target as HTMLElement).closest('[data-ignore-touch]')) return;
+
+      if (!isMenuOpen) {
         draggingFromEdge.current = true;
-      } else if (isMenuOpen && asideRef.current?.contains(e.target as Node)) {
+      } else if (isMenuOpen && asideRef.current?.contains(event.target as Node)) {
         draggingFromEdge.current = true;
       } else {
         draggingFromEdge.current = false;
@@ -45,12 +45,12 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
       isDraggingHorizontally.current = false;
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
+    const handleTouchMove = (event: TouchEvent) => {
       if (!draggingFromEdge.current) return;
-      e.preventDefault();
+      event.preventDefault();
 
-      const diffX = e.touches[0].clientX - startX.current;
-      const diffY = e.touches[0].clientY - startY.current;
+      const diffX = event.touches[0].clientX - startX.current;
+      const diffY = event.touches[0].clientY - startY.current;
 
       if (!isDraggingHorizontally.current) {
         if (Math.abs(diffX) > Math.abs(diffY)) {
@@ -144,9 +144,7 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
     setIsMenuOpen(false);
   };
 
-  const filteredFriends = friends.filter((friend) =>
-    friend.nickname.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredFriends = friends.slice(0, 50).filter((friend) => friend.nickname.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <aside
@@ -170,19 +168,33 @@ export default function ChatSidebar({ isMenuOpen, setIsMenuOpen, user, setSelect
       <p className="text-gray-400 px-5 border-t border-t-gray-800 pt-2 -mx-4">
         Mensagens diretas
       </p>
-      <ul className="flex flex-1 flex-col -mx-4 px-4 gap-1 overflow-y-auto overflow-x-hidden scrollbar-thin">
-        {filteredFriends.map((friend) => (
-          <li
-            key={friend.id}
-            ref={friend.id === selectedFriend?.id ? currentFriendRef : null}
-            className={`w-[calc(100%+3px)] flex items-center gap-2 cursor-pointer rounded-lg p-2 ${friend.id === selectedFriend?.id ? 'bg-gray-700' : 'bg-transparent'} hover:bg-gray-800`}
-            onClick={() => handleFriendClick(friend)}
-          >
-            <UserCircle2 className="size-8" />
-            <span className="flex-1 truncate">{friend.nickname}</span>
-          </li>
-        ))}
-      </ul>
+      {!filteredFriends.length ? (
+        search ? <span className="flex-1 ml-1 break-words">{`Não encontramos ninguém chamado "${search}"`}</span>
+          : (
+            <ul className=' flex-1 flex flex-col gap-6 overflow-hidden fade-mask'>
+              {Array.from({ length: 20 }, (_, i) => (
+                <li key={i} className='flex gap-2' style={{ opacity: 1 - (i / 20) }}>
+                  <div className='rounded-full size-8 bg-gray-500' />
+                  <div className='flex-1 bg-gray-500 h-8 rounded-full' />
+                </li>
+              ))}
+            </ul>
+          )
+      ) : (
+        <ul className="flex flex-1 flex-col -mx-4 px-4 gap-1 overflow-y-auto overflow-x-hidden scrollbar-thin">
+          {filteredFriends.map((friend) => (
+            <li
+              key={friend.id}
+              ref={friend.id === selectedFriend?.id ? currentFriendRef : null}
+              className={`w-[calc(100%+3px)] flex items-center gap-2 cursor-pointer rounded-lg p-2 ${friend.id === selectedFriend?.id ? 'bg-gray-700' : 'bg-transparent'} hover:bg-gray-800`}
+              onClick={() => handleFriendClick(friend)}
+            >
+              <UserCircle2 className="size-8" />
+              <span className="flex-1 truncate">{friend.nickname}</span>
+            </li>
+          ))}
+        </ul>
+      )}
       <section className="flex items-center justify-between gap-2 bg-gray-700 rounded-lg p-2">
         <div className="flex items-center gap-2 truncate flex-1">
           <UserCircle2 className="size-8" />
