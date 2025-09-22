@@ -20,7 +20,7 @@ export default function SearchBar({ setSearch, id, placeholder, labelClass, inpu
         type="text"
         autoComplete='off'
         placeholder={placeholder}
-        className={`bg-gray-700 w-full py-2 px-3 rounded-lg outline-none ${inputClass}`}
+        className={`bg-gray-700 w-full py-2 pl-3 pr-13 rounded-lg outline-none ${inputClass}`}
         onChange={({ target: { value } }) => setSearch(value.trim())}
         {...register }
       />
